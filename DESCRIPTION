@@ -1,0 +1,41 @@
+Package: scATACdb
+Title: 
+    A Collection of Single-cell ATAC Sequencing Datasets and 
+    Correspodnding Metadata 
+Version: 0.99.6
+Authors@R: 
+    c(person(given = "Erik",
+            family = "Christensen",
+            role = c("aut", "cre"),
+            email = "echris3@uwo.ca"),
+    person(given="Parisa",
+            family="Shooshtari",
+            role = c("aut"),
+            email="pshoosh@uwo.ca"))
+Description: 
+    #TODO
+    This package provides a tool to search and download a collection of tumour microenvironment 
+    single-cell RNA sequencing datasets and their metadata. TMExplorer aims to act as a single 
+    point of entry for users looking to study the tumour microenvironment at the single cell 
+    level. Users can quickly search available datasets using the metadata table and then 
+    download the ones they are interested in for analysis.
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: FALSE
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown
+Imports: methods, Matrix
+Depends: 
+    R (>= 4.0),
+    SingleCellExperiment
+biocViews: 
+    CancerData, 
+    SingleCellData, 
+    RNASeqData, 
+    SequencingData, 
+    ExpressionData, 
+    GEO, 
+    PackageTypeData
+BugReports: https://github.com/shooshtarilab/scATACseq/issues
