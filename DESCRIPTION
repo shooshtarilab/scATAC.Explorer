@@ -2,7 +2,7 @@ Package: scATACdb
 Title: 
     A Collection of Single-cell ATAC Sequencing Datasets and 
     Correspodnding Metadata 
-Version: 0.99.6
+Version: 0.99.0
 Authors@R: 
     c(person(given = "Erik",
             family = "Christensen",
@@ -29,7 +29,8 @@ Suggests: BiocStyle, knitr, rmarkdown
 Imports: methods, Matrix
 Depends: 
     R (>= 4.0),
-    SingleCellExperiment
+    SingleCellExperiment,
+    BiocFileCache
 biocViews: 
     CancerData, 
     SingleCellData, 

@@ -3,3 +3,6 @@
 .Rdata
 *.Rproj
 inst/doc
+*.xlsx
+.DS_Store
+
