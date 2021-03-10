@@ -24,7 +24,7 @@ the provided output directory, one for each type of data available in the tme_da
 \examples{
 
 # Retrieve a previously identified dataset (see queryTME) and save it to disk
-res <- queryTME(geo_accession = 'GSE72056')[[1]]
+res <- queryTME(geo_accession = 'GSE129785')[[1]]
 \dontshow{
          #res <- SingleCellExperiment(list(counts=matrix()))
          tdir = tempdir()

@@ -16,10 +16,10 @@
 #' @param has_truth Return only those datasets that have cell-type annotations available, or only those without annotations
 #' @param organism Search by source organism used in the study, for example human or mouse.
 #' #TODO update docs
-#' @param genome_build
-#' @param category
-#' @param tissue
-#' @param disease
+#' @param genome_build #TODO
+#' @param category #TODO
+#' @param tissue #TODO
+#' @param disease #TODO
 #' @param metadata_only Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE
 #' @param sparse Return expression as a sparse matrix. 
 #'                  Uses less memory but is less convenient to view, recommended only if encounter memory issues with dense data. Defaults to FALSE.
@@ -38,10 +38,10 @@
 #' 
 #' ## Retrieve a filtered metadata table that only shows datasets with 
 #' ## cell type annotations and cell type gene signatures
-#' res <- queryTME(has_truth = TRUE, has_signatures = TRUE, metadata_only = TRUE)
+#' res <- queryTME(has_truth = TRUE, has_clusters = TRUE, metadata_only = TRUE)
 #' 
 #' ## Retrieve a single dataset identified from the table
-#' res <- queryTME(geo_accession = "GSE72056")
+#' res <- queryTME(geo_accession = "GSE129785") #TODO maybe update this
 
 queryTME <- function(geo_accession=NULL,
                     author=NULL, 

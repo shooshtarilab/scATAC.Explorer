@@ -17,7 +17,7 @@
 #' @examples
 #' 
 #' # Retrieve a previously identified dataset (see queryTME) and save it to disk
-#' res <- queryTME(geo_accession = 'GSE72056')[[1]]
+#' res <- queryTME(geo_accession = 'GSE129785')[[1]]
 #' \dontshow{
 #'          #res <- SingleCellExperiment(list(counts=matrix()))
 #'          tdir = tempdir()
@@ -49,6 +49,6 @@ saveTME <- function(object, outdir){
     # end up storing them in a single object
     utils::write.csv(SingleCellExperiment::counts(object), file=expr_name)
     utils::write.csv(colData(object), file=label_name)
-    utils::write.csv(object@metadata$signatures, file=sig_name)
+    #utils::write.csv(object@metadata$signatures, file=sig_name)
     print(paste('Done! Check', outdir, 'for files', sep=' '))
 }

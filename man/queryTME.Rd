@@ -6,30 +6,25 @@
 \usage{
 queryTME(
   geo_accession = NULL,
-  score_type = NULL,
-  has_signatures = NULL,
-  has_truth = NULL,
-  tumour_type = NULL,
   author = NULL,
   journal = NULL,
   year = NULL,
   pmid = NULL,
   sequence_tech = NULL,
+  score_type = NULL,
+  has_clusters = NULL,
+  has_truth = NULL,
   organism = NULL,
+  genome_build = NULL,
+  category = NULL,
+  tissue = NULL,
+  disease = NULL,
   metadata_only = FALSE,
   sparse = FALSE
 )
 }
 \arguments{
 \item{geo_accession}{Search by geo accession number. Good for returning individual datasets}
-
-\item{score_type}{Search by type of score (TPM, FPKM, raw count)}
-
-\item{has_signatures}{Return only those datasets that have cell-type gene signatures available, or only those without (TRUE/FALSE)}
-
-\item{has_truth}{Return only those datasets that have cell-type annotations available, or only those without annotations}
-
-\item{tumour_type}{Search by type of tumour represented by the dataset}
 
 \item{author}{Search by the author who published the dataset}
 
@@ -41,7 +36,22 @@ queryTME(
 
 \item{sequence_tech}{Search by sequencing technology used to sample the cells.}
 
-\item{organism}{Search by source organism used in the study, for example human or mouse.}
+\item{score_type}{Search by type of score (TPM, FPKM, raw count)}
+
+\item{has_clusters}{Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)}
+
+\item{has_truth}{Return only those datasets that have cell-type annotations available, or only those without annotations}
+
+\item{organism}{Search by source organism used in the study, for example human or mouse.
+#TODO update docs}
+
+\item{genome_build}{#TODO}
+
+\item{category}{#TODO}
+
+\item{tissue}{#TODO}
+
+\item{disease}{#TODO}
 
 \item{metadata_only}{Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE}
 
@@ -66,9 +76,9 @@ res <- queryTME(metadata_only = TRUE)
 
 ## Retrieve a filtered metadata table that only shows datasets with 
 ## cell type annotations and cell type gene signatures
-res <- queryTME(has_truth = TRUE, has_signatures = TRUE, metadata_only = TRUE)
+res <- queryTME(has_truth = TRUE, has_clusters = TRUE, metadata_only = TRUE)
 
 ## Retrieve a single dataset identified from the table
-res <- queryTME(geo_accession = "GSE72056")
+res <- queryTME(geo_accession = "GSE129785") #TODO maybe update this
 }
 \keyword{tumour}

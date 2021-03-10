@@ -23,17 +23,18 @@ fetchTME <- function(df, row, sparse){
         col.num <- which(colnames(expression) %in% labels$cell)
         expression <- expression[,col.num]
     }
-    sigs <- downloadTME(df, row, 'signature_link', bfc)
+    #TODO for some reason this is failing, what is different about the metadata
+    #sigs <- downloadTME(df, row, 'signature_link', bfc)
 
-    tme_data_meta <- list(signatures = sigs,
+    tme_data_meta <- list(#signatures = sigs,
                         pmid = df[row, 'PMID'],
-                        technology = df[row, 'Technology'],
+                        technology = df[row, 'sequencing_tech'],
                         score_type = df[row, 'score_type'],
                         organism  = df[row, 'Organism'],
                         author = df[row, 'author'],
-                        tumour_type = df[row, 'tumor_type'],
-                        patients = df[row, 'patients'],
-                        tumours  = df[row, 'tumours'],
+                        genome_build = df[row, 'genome_build'],
+                        #patients = df[row, 'patients'],
+                        #tumours  = df[row, 'tumours'],
                         cells = colnames(expression),
                         #TODO maybe figure out how to make this a dataframe with
                         #the first few columns if a dataset has multiple
