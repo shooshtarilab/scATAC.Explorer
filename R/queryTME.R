@@ -42,7 +42,7 @@
 #' res <- queryTME(has_truth = TRUE, has_clusters = TRUE, metadata_only = TRUE)
 #' 
 #' ## Retrieve a single dataset identified from the table
-#' res <- queryTME(geo_accession = "GSE129785") #TODO maybe update this
+#' res <- queryTME(geo_accession = "GSE129785", tissue="blood") #TODO maybe update this
 
 queryTME <- function(geo_accession=NULL,
                     author=NULL, 
