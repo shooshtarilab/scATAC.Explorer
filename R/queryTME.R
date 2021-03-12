@@ -27,6 +27,7 @@
 #' @importFrom methods new
 #' @importFrom Matrix Matrix
 #' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom data.table like
 #' @export
 #' @return A list containing a table of metadata or 
 #' one or more SingleCellExperiment objects
@@ -124,20 +125,20 @@ queryTME <- function(geo_accession=NULL,
         df <- df[toupper(df$Organism) == toupper(organism),]
     }
     if (!is.null(genome_build)) {
-        df <- df[toupper(df$Genome_Build) == toupper(genome_build),]
+        df <- df[toupper(df$Genome_Build) %like% toupper(genome_build),]
     }
     if (!is.null(category)) {
         #TODO this column is a list of strings separated by "+", 
         # need to actually read it as a list
-        df <- df[toupper(df$broad_cell_categories) == toupper(category),]
+        df <- df[toupper(df$broad_cell_categories) %like% toupper(category),]
     }
     if (!is.null(tissue)) {
         #TODO also a list
-        df <- df[toupper(df$tissue_type) == toupper(tissue),]
+        df <- df[toupper(df$tissue_type) %like% toupper(tissue),]
     }
     if (!is.null(disease)) {
         #TODO also a list
-        df <- df[toupper(df$Disease) == toupper(disease),]
+        df <- df[toupper(df$Disease) %like% toupper(disease),]
     }
 
     if (metadata_only) {
