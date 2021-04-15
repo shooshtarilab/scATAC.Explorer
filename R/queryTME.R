@@ -1,8 +1,8 @@
-#' A function to query TME datasets available in this package
+#' A function to query scATAC-seq datasets available in this package
 #'
-#' This function allows you to search and subset included TME datasets. 
-#' A list of tme_data objects matching the provided options will be returned, 
-#' if queryTME is called without any options it will retrieve all available datasets. 
+#' This function allows you to search and subset included scATAC-seq datasets. 
+#' A list of scATAC-seq_data objects matching the provided options will be returned, 
+#' if queryATAC is called without any options it will retrieve all available datasets. 
 #' This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
 #' In most cases it is recommended to instead filter databases with some criteria.
 #' @param geo_accession Search by geo accession number. Good for returning individual datasets
@@ -35,14 +35,14 @@
 #' @examples
 #' 
 #' ## Retrieve the metadata table to see what data is available
-#' res <- queryTME(metadata_only = TRUE)
+#' res <- queryATAC(metadata_only = TRUE)
 #' 
 #' ## Retrieve a filtered metadata table that only shows datasets with 
-#' ## cell type annotations and cell type gene signatures
-#' res <- queryTME(has_truth = TRUE, has_clusters = TRUE, metadata_only = TRUE)
+#' ## cell type annotations and clustering annotations
+#' res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
 #' 
 #' ## Retrieve a single dataset identified from the table
-#' res <- queryTME(geo_accession = "GSE129785", tissue="blood") #TODO maybe update this
+#' res <- queryATAC(accession = "GSE129785") #TODO maybe update this
 
 queryTME <- function(geo_accession=NULL,
                     author=NULL, 
@@ -61,7 +61,7 @@ queryTME <- function(geo_accession=NULL,
 
                     metadata_only=FALSE,
                     sparse = FALSE){
-    df <- tme_meta
+    df <- scatac_meta
     if (!is.null(geo_accession)) {
         df <- df[df$accession == geo_accession,]
     }
