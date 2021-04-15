@@ -14,11 +14,11 @@ fetchTME <- function(df, row, sparse){
     cache_path <- tempfile()
     bfc <- BiocFileCache(cache_path, ask = FALSE)
     if (sparse == FALSE){
-        expression <- downloadTME(df, row, 'expression_link', bfc)
+        expression <- downloadTME(df, row, 'dense_matrix_link', bfc)
     } else if (sparse == TRUE){
-        expression <- downloadTME(df, row, 'sparse_expression_link', bfc)
+        expression <- downloadTME(df, row, 'sparse_matrix_link', bfc)
     }
-    labels <- downloadTME(df, row, 'truth_label_link', bfc)
+    labels <- downloadTME(df, row, 'cell_annotation_link', bfc)
     if (!is.null(labels) && length(labels$cell)!=length(colnames(expression))){
         col.num <- which(colnames(expression) %in% labels$cell)
         expression <- expression[,col.num]
