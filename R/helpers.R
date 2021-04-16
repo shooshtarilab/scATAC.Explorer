@@ -1,5 +1,5 @@
 #' @importFrom BiocFileCache BiocFileCache bfcadd
-downloadTME <- function(df, row, column, bfc){
+downloadATAC <- function(df, row, column, bfc){
     if (df[row, column] != ''){
         filename <- bfcadd(bfc, "TestWeb", fpath=df[row,column])
         return(readRDS(filename))
@@ -9,34 +9,32 @@ downloadTME <- function(df, row, column, bfc){
 
 }
 
-fetchTME <- function(df, row, sparse){
+fetchATAC <- function(df, row, sparse){
     #download the data into dataframes
     cache_path <- tempfile()
     bfc <- BiocFileCache(cache_path, ask = FALSE)
     if (sparse == FALSE){
-        expression <- downloadTME(df, row, 'dense_matrix_link', bfc)
+        expression <- downloadATAC(df, row, 'dense_matrix_link', bfc)
     } else if (sparse == TRUE){
-        expression <- downloadTME(df, row, 'sparse_matrix_link', bfc)
+        expression <- downloadATAC(df, row, 'sparse_matrix_link', bfc)
     }
-    labels <- downloadTME(df, row, 'cell_annotation_link', bfc)
+    labels <- downloadATAC(df, row, 'cell_annotation_link', bfc)
     if (!is.null(labels) && length(labels$cell)!=length(colnames(expression))){
         col.num <- which(colnames(expression) %in% labels$cell)
         expression <- expression[,col.num]
     }
-    #TODO for some reason this is failing, what is different about the metadata
-    #sigs <- downloadTME(df, row, 'signature_link', bfc)
 
-    tme_data_meta <- list(#signatures = sigs,
+    dataset_data_meta <- list(#signatures = sigs,
                         pmid = df[row, 'PMID'],
                         author = df[row, 'author'],
-                        technology = df[row, 'sequencing_tech'],
+                        technology = df[row, 'Sequencing_Technology'],
                         score_type = df[row, 'score_type'],
                         organism  = df[row, 'Organism'],
-                        genome_build = df[row, 'genome_build'],
-                        cell_categories = df[row,'broad_cell_categories'],
-                        tissue_type = df[row,'tissue_type'],
-                        disease = df[row,'disease'],
-                        summary = df[row,'Data.Summary']
+                        genome_build = df[row, 'Genome_Build'],
+                        cell_categories = df[row,'Broad_Cell_Categories_Present'],
+                        tissue_type = df[row,'Tissue.Sample_Type'],
+                        disease = df[row,'Disease'],
+                        summary = df[row,'Data_Summary'],
                         cells = colnames(expression),
 
                         #TODO maybe figure out how to make this a dataframe with
@@ -45,15 +43,15 @@ fetchTME <- function(df, row, sparse){
                         regions = row.names(expression),
                         geo_accession = df[row, 'accession'])
     if (is.null(labels)){
-        tme_dataset <- SingleCellExperiment(list(counts = expression),
-                                            metadata = tme_data_meta)
+        dataset <- SingleCellExperiment(list(counts = expression),
+                                            metadata = dataset_data_meta)
     }else{
-        tme_dataset <- SingleCellExperiment(list(counts = expression),
+        dataset <- SingleCellExperiment(list(counts = expression),
                                     colData = data.frame(label=labels$truth),
-                                    metadata = tme_data_meta)
+                                    metadata = dataset_data_meta)
     }
 
 
-    return(tme_dataset)
+    return(dataset)
 
 }
