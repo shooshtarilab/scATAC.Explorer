@@ -28,6 +28,7 @@
 #' @importFrom Matrix Matrix
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom data.table like
+#' @importFrom S4Vectors metadata
 #' @export
 #' @return A list containing a table of metadata or 
 #' one or more SingleCellExperiment objects
@@ -60,7 +61,7 @@ queryATAC <- function(geo_accession=NULL,
                     disease=NULL, #TODO add code
 
                     metadata_only=FALSE,
-                    sparse = FALSE){
+                    sparse = TRUE){
     df <- scatac_meta
     if (!is.null(geo_accession)) {
         df <- df[df$accession == geo_accession,]
@@ -146,9 +147,12 @@ queryATAC <- function(geo_accession=NULL,
         return(list(df))
     } else {
         df_list <- list()
+        df_names <- character()
         for (row in seq_len(nrow(df))){
             df_list[[row]] <- fetchATAC(df, row, sparse)
+            df_names[[row]] <- metadata(df_list[[row]])$matrix_name
         }
+        names(df_list) <- df_names
         return(df_list)
     }
 

@@ -36,6 +36,7 @@ fetchATAC <- function(df, row, sparse){
                         disease = df[row,'Disease'],
                         summary = df[row,'Data_Summary'],
                         cells = colnames(expression),
+                        matrix_name = df[row, 'matrix_names'],
 
                         #TODO maybe figure out how to make this a dataframe with
                         #the first few columns if a dataset has multiple
@@ -47,7 +48,7 @@ fetchATAC <- function(df, row, sparse){
                                             metadata = dataset_data_meta)
     }else{
         dataset <- SingleCellExperiment(list(counts = expression),
-                                    colData = data.frame(label=labels$truth),
+                                    colData = data.frame(label=labels[,c("cluster", "cell_label")]),
                                     metadata = dataset_data_meta)
     }
 
