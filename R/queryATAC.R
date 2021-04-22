@@ -1,8 +1,8 @@
 #' A function to query scATAC-seq datasets available in this package
 #'
-#' This function allows you to search and subset included scATAC-seq datasets. 
-#' A list of scATAC-seq_data objects matching the provided options will be returned, 
-#' if queryATAC is called without any options it will retrieve all available datasets. 
+#' This function allows you to search and subset included scATAC-seq datasets.
+#' A list of scATAC-seq_data objects matching the provided options will be returned,
+#' if queryATAC is called without any options it will retrieve all available datasets.
 #' This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
 #' In most cases it is recommended to instead filter databases with some criteria.
 #' @param geo_accession Search by geo accession number. Good for returning individual datasets
@@ -21,7 +21,7 @@
 #' @param tissue #TODO
 #' @param disease #TODO
 #' @param metadata_only Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE
-#' @param sparse Return expression as a sparse matrix. 
+#' @param sparse Return expression as a sparse matrix.
 #'                  Uses less memory but is less convenient to view, recommended only if encounter memory issues with dense data. Defaults to FALSE.
 #' @keywords tumour
 #' @importFrom methods new
@@ -30,27 +30,27 @@
 #' @importFrom data.table like
 #' @importFrom S4Vectors metadata
 #' @export
-#' @return A list containing a table of metadata or 
+#' @return A list containing a table of metadata or
 #' one or more SingleCellExperiment objects
 #'
 #' @examples
-#' 
+#'
 #' ## Retrieve the metadata table to see what data is available
 #' res <- queryATAC(metadata_only = TRUE)
-#' 
-#' ## Retrieve a filtered metadata table that only shows datasets with 
+#'
+#' ## Retrieve a filtered metadata table that only shows datasets with
 #' ## cell type annotations and clustering annotations
 #' res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
-#' 
+#'
 #' ## Retrieve a single dataset identified from the table
 #' res <- queryATAC(accession = "GSE129785") #TODO maybe update this
 
 queryATAC <- function(geo_accession=NULL,
-                    author=NULL, 
-                    journal=NULL, 
-                    year=NULL, 
-                    pmid=NULL, 
-                    sequence_tech=NULL, 
+                    author=NULL,
+                    journal=NULL,
+                    year=NULL,
+                    pmid=NULL,
+                    sequence_tech=NULL,
                     score_type=NULL,
                     has_clusters=NULL,
                     has_truth=NULL,
@@ -79,18 +79,18 @@ queryATAC <- function(geo_accession=NULL,
             year <- sub('>','',year)
             year <- sub('<','',year)
             df <- df[df$year>=year,]
-        
+
         #check between
         }else if (grepl('-',year,fixed=TRUE)){
             year <- strsplit(year,'-')[[1]]
             df <- df[df$year>=year[[1]]&df$year<=year[[2]],]
-        
+
         #check less than
         }else if (gregexpr('>', year)[[1]][[1]] == 5 || gregexpr('<',year)[[1]][[1]]==1){
             year <- sub('>','',year)
             year <- sub('<','',year)
             df <- df[df$year<=year,]
-        
+
         #check equals
         }else{
             df <- df[df$year==year,]
@@ -104,7 +104,7 @@ queryATAC <- function(geo_accession=NULL,
         df <- df[toupper(df$sequencing_tech) == toupper(sequence_tech),]
     }
     if (!is.null(score_type)) {
-        #TODO eventually this will become a way to select which type of score you want to 
+        #TODO eventually this will become a way to select which type of score you want to
         # download since we will store multiple types
         df <- df[toupper(df$score_type) == toupper(score_type) ,]
     }
@@ -129,7 +129,7 @@ queryATAC <- function(geo_accession=NULL,
         df <- df[toupper(df$Genome_Build) %like% toupper(genome_build),]
     }
     if (!is.null(category)) {
-        #TODO this column is a list of strings separated by "+", 
+        #TODO this column is a list of strings separated by "+",
         # need to actually read it as a list
         df <- df[toupper(df$broad_cell_categories) %like% toupper(category),]
     }
@@ -149,8 +149,15 @@ queryATAC <- function(geo_accession=NULL,
         df_list <- list()
         df_names <- character()
         for (row in seq_len(nrow(df))){
-            df_list[[row]] <- fetchATAC(df, row, sparse)
-            df_names[[row]] <- metadata(df_list[[row]])$matrix_name
+            tryCatch({
+                df_list[[row]] <- fetchATAC(df, row, sparse)
+                df_names[[row]] <- metadata(df_list[[row]])$matrix_name
+            },
+            error = function (e) {
+                print(conditionMessage(e))
+            }
+
+            )
         }
         names(df_list) <- df_names
         return(df_list)
