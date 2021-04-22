@@ -10,7 +10,8 @@
 #' @param outdir The directory to save the tme_data in, the directory should not exist yet. 
 #' @keywords tumour
 #' @importFrom methods is
-#' @importFrom SingleCellExperiment SingleCellExperiment colData 
+#' @importFrom SingleCellExperiment SingleCellExperiment 
+#' @importFrom SummarizedExperiment colData
 #' @importFrom Matrix Matrix
 #' @export
 #' @return Nothing
@@ -48,7 +49,7 @@ saveATAC <- function(object, outdir){
                                  sep='_'))
     label_name <- file.path(outdir, 
                             paste(object@metadata$geo_accession,
-                            "cell_types.csv",
+                            "cell_types_and_clusters.csv",
                             sep='_'))
     #sig_name <- file.path(outdir, 
     #                        paste(object@metadata$geo_accession,
@@ -56,12 +57,12 @@ saveATAC <- function(object, outdir){
     #                        sep='_'))
     #TODO may need to add an additional option for saving multiple assays if we 
     # end up storing them in a single object
-    # will alwas have matrix, cellID, and peaks
+    # will always have matrix, cellID, and peaks
     Matrix::writeMM(SingleCellExperiment::counts(object), file=expr_name)
     write(colnames(object), file=cellID_name)
     write(row.names(object), file=peaks_name)
     # only write cluster/celltype data if we have it
-    if (length(colData(object) > 0)) {
+    if (length(colnames(colData(object)) > 0)) {
         write.csv(colData(object), file=label_name)
     }
     #utils::write.csv(object@metadata$signatures, file=sig_name)
