@@ -1,4 +1,4 @@
-Package: scATACdb
+Package: scATAC-Explorer
 Title: 
     A Collection of Single-cell ATAC Sequencing Datasets and 
     Correspodnding Metadata 
@@ -12,13 +12,17 @@ Authors@R:
             family="Shooshtari",
             role = c("aut"),
             email="pshoosh@uwo.ca")
-      )
+    person(given="Arrian",
+            family="Gibson-Khademi",
+            role = c("aut"),
+            email="agibsonk@uwo.ca")      
+	  )
 Description: 
     #TODO
-    This package provides a tool to search and download a collection of tumour microenvironment 
-    single-cell RNA sequencing datasets and their metadata. TMExplorer aims to act as a single 
-    point of entry for users looking to study the tumour microenvironment at the single cell 
-    level. Users can quickly search available datasets using the metadata table and then 
+    This package provides a tool to search and download a collection of publicly available single cell
+    ATAC-seq datasets and their metadata. scATAC-Explorer aims to act as a single 
+    point of entry for users looking to study single cell ATAC-seq data. 
+    Users can quickly search available datasets using the metadata table and then 
     download the ones they are interested in for analysis.
 License: Artistic-2.0
 Encoding: UTF-8
@@ -34,9 +38,8 @@ Depends:
     BiocFileCache,
     data.table
 biocViews: 
-    CancerData, 
     SingleCellData, 
-    RNASeqData, 
+    ATACSeqData, 
     SequencingData, 
     ExpressionData, 
     GEO, 
