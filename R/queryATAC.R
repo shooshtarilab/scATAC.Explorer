@@ -1,7 +1,8 @@
 #' A function to query scATAC-seq datasets available in this package
 #'
 #' This function allows you to search and subset included scATAC-seq datasets.
-#' A list of scATAC-seq_data objects matching the provided options will be returned,
+#' A named list of scATAC-seq_data objects matching the provided options will be returned,
+#' In cases where multiple matrices are available for each dataset, each matrix will be a seperate object within the list
 #' if queryATAC is called without any options it will retrieve all available datasets.
 #' This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
 #' In most cases it is recommended to instead filter databases with some criteria.
@@ -13,10 +14,10 @@
 #' @param sequence_tech Search by sequencing technology used to sample the cells.
 #' @param score_type Search by type of score (TPM, FPKM, raw count)
 #' @param has_clusters Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)
-#' @param has_truth Return only those datasets that have cell-type annotations available, or only those without annotations
+#' @param has_cell_types Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
 #' @param organism Search by source organism used in the study, for example human or mouse.
 #' #TODO update docs
-#' @param genome_build #TODO
+#' @param genome_build Return datasets built only using specified genome build (Ex. hg19)
 #' @param category #TODO
 #' @param tissue #TODO
 #' @param disease #TODO
@@ -53,7 +54,7 @@ queryATAC <- function(geo_accession=NULL,
                     sequence_tech=NULL,
                     score_type=NULL,
                     has_clusters=NULL,
-                    has_truth=NULL,
+                    has_cell_type=NULL,
                     organism=NULL,
                     genome_build=NULL, #TODO add this code
                     category=NULL, #TODO add code
@@ -110,16 +111,16 @@ queryATAC <- function(geo_accession=NULL,
     }
     if (!is.null(has_clusters)) {
         if (has_clusters) {
-            df <- df[df$clusters == 'Y' ,]
+            df <- df[df$Clustering_Results_Available == 'Y' ,]
         }else if (!has_clusters) {
-            df <- df[df$clusters == 'N' ,]
+            df <- df[df$Clustering_Results_Available == 'N' ,]
         }
     }
-    if (!is.null(has_truth)) {
-        if (has_truth) {
-            df <- df[df$cell_labels == 'Y', ]
-        }else if (!has_truth) {
-            df <- df[df$cell_labels == 'N', ]
+    if (!is.null(has_cell_type)) {
+        if (has_cell_type) {
+            df <- df[df$cell_type_labels_available == 'Y', ]
+        }else if (!has_cell_type) {
+            df <- df[df$cell_type_labels_available == 'N', ]
         }
     }
     if (!is.null(organism)) {
