@@ -39,7 +39,7 @@ Depends:
     data.table
 biocViews: 
     SingleCellData, 
-    ATACSeqData, 
+    ATACSeq, 
     SequencingData, 
     ExpressionData, 
     GEO, 
