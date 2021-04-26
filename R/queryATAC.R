@@ -17,10 +17,10 @@
 #' @param has_cell_types Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
 #' @param organism Search by source organism used in the study, for example human or mouse.
 #' #TODO update docs
-#' @param genome_build Return datasets built only using specified genome build (Ex. hg19)
-#' @param category #TODO
-#' @param tissue #TODO
-#' @param disease #TODO
+#' @param genome_build Return datasets built only using specified genome build (ex. hg19)
+#' @param category Return datasets based on broad cell categories (ex. Hematopoetic cells). To view cell categories available, query metadata.
+#' @param tissue Return datasets based on tissues sampled (ex. Blood)
+#' @param disease Return datasets based on sampled disease (ex. carcinoma, leukemia, diabetes)
 #' @param metadata_only Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE
 #' @param sparse Return expression as a sparse matrix.
 #'                  Uses less memory but is less convenient to view, recommended only if encounter memory issues with dense data. Defaults to FALSE.
