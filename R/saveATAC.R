@@ -1,31 +1,31 @@
 
-#' A function to save a scATAC-seq dataset stored in a SingleCellExperiment 
+#' A function to save a scATAC-seq dataset stored in a SingleCellExperiment
 #'
-#' This function allows you to save the counts, 
-#' peaks, cell ID's/barcodes, and any cell clustering data to disk in csv format. It takes two options: 
-#' an object to save and a directory to save in. Multiple files will be created in 
-#' the provided output directory, one for each type of data available in the scATAC_data object 
+#' This function allows you to save the counts,
+#' peaks, cell ID's/barcodes, and any cell clustering data to disk in csv format. It takes two options:
+#' an object to save and a directory to save in. Multiple files will be created in
+#' the provided output directory, one for each type of data available in the scATAC_data object
 #' (counts, cell ID/Barcode, peak regions, cell type/cluster annotations).
 #' @param object The SingleCellExperiment object to be written to disk, this should be an individual dataset returned by queryATAC.
-#' @param outdir The directory to save the data in, the directory should not exist yet. 
+#' @param outdir The directory to save the data in, the directory should not exist yet.
 #' @keywords scATAC-seq
 #' @importFrom methods is
-#' @importFrom SingleCellExperiment SingleCellExperiment 
-#' @importFrom SummarizedExperiment colData
+#' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom SingleCellExperiment colData
 #' @importFrom Matrix Matrix
 #' @export
 #' @return Nothing
-#' 
+#'
 #' @examples
-#' 
+#'
 #' # Retrieve a previously identified dataset (see queryATAC) and save it to disk
-#' res <- queryATAC(geo_accession = 'GSE129785')[[1]]
+#' res <- queryATAC(geo_accession = 'GSE89362')[[1]]
 #' \dontshow{
 #'          #res <- SingleCellExperiment(list(counts=matrix()))
 #'          tdir = tempdir()
-#'          output_directory_name = file.path(tdir, 'save_tme_data')} 
+#'          output_directory_name = file.path(tdir, 'save_tme_data')}
 #' saveATAC(res, output_directory_name)
-#' 
+#'
 saveATAC <- function(object, outdir){
     if (!is(object,"SingleCellExperiment")){
         stop('object parameter must be of type SingleCellExperiment')
@@ -35,25 +35,25 @@ saveATAC <- function(object, outdir){
     } else {
         dir.create(outdir)
     }
-    expr_name <- file.path(outdir, 
+    expr_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
-                            "matrix.mtx", 
+                            "matrix.mtx",
                             sep='_'))
-    cellID_name <- file.path(outdir, 
+    cellID_name <- file.path(outdir,
                            paste(object@metadata$geo_accession,
-                                 "barcodes.tsv", 
+                                 "barcodes.tsv",
                                  sep='_'))
-    peaks_name <- file.path(outdir, 
+    peaks_name <- file.path(outdir,
                            paste(object@metadata$geo_accession,
-                                 "peaks.tsv", 
+                                 "peaks.tsv",
                                  sep='_'))
-    label_name <- file.path(outdir, 
+    label_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
                             "cell_types_and_clusters.csv",
                             sep='_'))
-    #TODO may need to add an additional option for saving multiple assays if we 
+    #TODO may need to add an additional option for saving multiple assays if we
     # end up storing them in a single object
-    
+
     # will always have matrix, cellID, and peaks
     Matrix::writeMM(SingleCellExperiment::counts(object), file=expr_name)
     write(colnames(object), file=cellID_name)

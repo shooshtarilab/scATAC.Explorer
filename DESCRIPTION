@@ -36,7 +36,8 @@ Depends:
     R (>= 4.0),
     SingleCellExperiment,
     BiocFileCache,
-    data.table
+    data.table,
+    S4Vectors
 biocViews: 
     SingleCellData, 
     ATACSeq, 

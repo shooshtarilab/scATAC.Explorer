@@ -40,23 +40,23 @@ queryATAC(
 
 \item{has_clusters}{Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)}
 
+\item{has_cell_type}{Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)}
+
 \item{organism}{Search by source organism used in the study, for example human or mouse.
 #TODO update docs}
 
-\item{genome_build}{Return datasets built only using specified genome build (Ex. hg19)}
+\item{genome_build}{Return datasets built only using specified genome build (ex. hg19)}
 
-\item{category}{#TODO}
+\item{category}{Return datasets based on broad cell categories (ex. Hematopoetic cells). To view cell categories available, query metadata.}
 
-\item{tissue}{#TODO}
+\item{tissue}{Return datasets based on tissues sampled (ex. Blood)}
 
-\item{disease}{#TODO}
+\item{disease}{Return datasets based on sampled disease (ex. carcinoma, leukemia, diabetes)}
 
 \item{metadata_only}{Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE}
 
 \item{sparse}{Return expression as a sparse matrix.
 Uses less memory but is less convenient to view, recommended only if encounter memory issues with dense data. Defaults to FALSE.}
-
-\item{has_cell_types}{Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)}
 }
 \value{
 A list containing a table of metadata or
@@ -80,6 +80,6 @@ res <- queryATAC(metadata_only = TRUE)
 res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
 
 ## Retrieve a single dataset identified from the table
-res <- queryATAC(accession = "GSE129785") #TODO maybe update this
+res <- queryATAC(geo_accession = "GSE89362") #TODO maybe update this
 }
 \keyword{tumour}

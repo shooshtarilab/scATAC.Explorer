@@ -14,7 +14,7 @@
 #' @param sequence_tech Search by sequencing technology used to sample the cells.
 #' @param score_type Search by type of score (TPM, FPKM, raw count)
 #' @param has_clusters Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)
-#' @param has_cell_types Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
+#' @param has_cell_type Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
 #' @param organism Search by source organism used in the study, for example human or mouse.
 #' #TODO update docs
 #' @param genome_build Return datasets built only using specified genome build (ex. hg19)
@@ -44,7 +44,7 @@
 #' res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
 #'
 #' ## Retrieve a single dataset identified from the table
-#' res <- queryATAC(accession = "GSE129785") #TODO maybe update this
+#' res <- queryATAC(geo_accession = "GSE89362") #TODO maybe update this
 
 queryATAC <- function(geo_accession=NULL,
                     author=NULL,

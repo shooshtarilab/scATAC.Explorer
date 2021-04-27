@@ -24,11 +24,11 @@ the provided output directory, one for each type of data available in the scATAC
 \examples{
 
 # Retrieve a previously identified dataset (see queryATAC) and save it to disk
-res <- queryATAC(geo_accession = 'GSE129785')[[1]]
+res <- queryATAC(geo_accession = 'GSE89362')[[1]]
 \dontshow{
          #res <- SingleCellExperiment(list(counts=matrix()))
          tdir = tempdir()
-         output_directory_name = file.path(tdir, 'save_tme_data')} 
+         output_directory_name = file.path(tdir, 'save_tme_data')}
 saveATAC(res, output_directory_name)
 
 }
