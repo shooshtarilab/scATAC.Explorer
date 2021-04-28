@@ -1,0 +1,179 @@
+---
+title: "scATAC.Explorer"
+author: "Arrian Gibson-Khademi"
+output: BiocStyle::html_document
+package: scATAC.Explorer
+vignette: >
+  %\VignetteIndexEntry{scATAC.Explorer}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(scATAC.Explorer)
+```
+# Introduction
+
+scATAC.Explorer (Single Cell ATAC-seq Explorer) is a curated collection of publicly available scATAC-seq datasets. 
+It aims to provide a single point of entry for users looking to investigate epigenetics and chromatin accessibilty at a single cell resolution across many available datasets. 
+
+Users can quickly search available datasets using the metadata table, and then download any datasets they have discovered relevant to their research in a standard and easily accessible format. 
+Optionally, users can save the datasets for use in applications other than R. 
+
+This package will improve the ease of studying the epigenome across a variety of organisims, cell types, and diseases. 
+Developers may use this package to obtain data for validation of new algorithms, or to study differences between scATAC-seq datasets. 
+
+# Exploring available datasets
+
+Start by exploring the available datasets through metadata.
+
+```{r}
+res = queryATAC(metadata_only = TRUE)
+```
+```{r, echo=FALSE}
+knitr::kable(head(res[[1]][,1:5]))
+```
+
+This will return a list containing a single dataframe of metadata for all available datasets. 
+View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields.
+
+Note: in order to keep the function's interface consistent, `queryATAC` always returns a list of objects, even if there is only one object. 
+You may prefer running `res = queryATAC(metadata_only = TRUE)[[1]]` in order to save the dataframe directly.
+
+The `metatadata_only` argument can be applied alongside any other argument in order to examine only datasets that have certain qualities. 
+You can, for instance, view only breast cancer datasets by using 
+
+```{r}
+res = queryATAC(tumour_type = 'leukemia', metadata_only = TRUE)[[1]]
+```
+```{r, echo=FALSE}
+knitr::kable(head(res[,1:5]))
+```
+
+| Search Parameter | Description                                     | Examples                |
+| ---------------- | ----------------------------------------------- | ----------------------- |
+| geo_accession    | Search by GEO accession number                  | GSE129785, GSE89362     |
+| has_cell_types   | Filter by presence of cell-type annotations     | TRUE, FALSE             |
+| has_clusters     | Filter by presence of cluster results           | TRUE, FALSE             |
+| disease          | Search by disease                               | Carcinoma, Leukemia     |
+| author           | Search by first author                          | Satpathy, Cusanovich    |
+| journal          | Search by publication journal                   | Science, Nature, Cell   |
+| year             | Search by year of publication                   | <2015, >2015, 2013-2015 |
+| pmid             | Search by PubMed ID                             | 27526324, 32494068      |
+| sequence_tech    | Search by sequencing technology                 | 10x Genomics Chromium   |
+| organism         | Search by source organism                       | Mus musculus            |
+| sparse           | Return expression in sparse matrices            | TRUE, FALSE             |
+
+: (\#tab:table1) Search parameters for `queryATAC` alongside example values.
+
+## Searching by year
+
+In order to search by single years and a range of years, the package looks for specific patterns. 
+'2013-2015' will search for datasets published between 2013 and 2015, inclusive. 
+'<2015' or '2015>' will search for datasets published before or in 2015. 
+'>2015' or '2015<' will search for datasets published in or after 2015.
+
+# Getting datasets
+
+Once you've found a field to search on, you can get your data. 
+For this example, we're pulling a specific dataset by its GEO accession ID.
+
+```{r}
+res = queryATAC(geo_accession = "GSE89362")
+```
+
+This will return a list containing dataset GSE89362. 
+The dataset is stored as a `SingleCellExperiment` object,
+which has the following metadata list
+
+| Attribute     | Description |
+| ------------- | --------------------------------------------------------------- |
+| cells         | A list of cells included in the study |
+| regions       | A list of genomic regions (peaks) included in the study |
+| pmid          | The PubMed ID of the study |
+| technology    | The sequencing technology used |
+| genome_build  | The genome build used for data generation |
+| score_type    | The type of scoring or normalization used on the counts data |
+| organism      | The type of organism from which cells were sequenced |
+| author        | The first author of the paper presenting the data |
+| disease       | The diseases sampled cells were sampled from |
+| summary       | A broad summary of the study conditions the sample was assayed from |
+| geo_accession | The GEO accession ID for the dataset |
+
+: (\#tab:table2) Metadata attributes in the `SingleCellExperiment` object.
+
+To access the expression data for a result, use
+```{r, eval=FALSE}
+View(counts(res[[1]]))
+```
+```{r, echo=FALSE}
+knitr::kable(head(counts(res[[1]])[,1:2]))
+```
+
+Cell type labels and/or cluster assignments are stored under `colData(res[[1]])` for datasets 
+for which cell type labels and cluster assignments are available
+
+Metadata is stored in a named list accessible by `metadata(res[[1]])`. 
+Specific entries can be accessed by attribute name.
+
+```{r}
+metadata(res[[1]])$pmid
+```
+
+## Example: Returning all datasets with cell-type labels
+
+Say you want to compare chromatin accessibility between known cell types. 
+To do this, you need datasets that have cell-type annotations available. 
+```{r, eval=FALSE}
+res = queryATAC(has_cell_type = TRUE)
+```
+This will return a list of all datasets that have cell-types annotations available. 
+You can see the cell types for the first dataset using the following command:
+```{r, eval=FALSE}
+View(colData(res[[1]]))
+```
+```{r, echo=FALSE}
+knitr::kable(head(colData(res[[1]])))
+```
+
+The first column of this dataframe contains the cell cluster assignment (if available), and the second contains the cell type assignment (if available). The row names of the dataframe specify the cell ID/barcode the annotation belongs to.
+
+## Example: Accessing counts matrix
+####### TODO: ASK ERIC ABOUT counts below and the data frame display
+The counts matrix can be accessed using the counts() function, stored in a sparse matrix format by default:
+```{r, eval=FALSE}
+res = queryATAC(geo_accession = "GSE89362")
+counts(res[[1]])[1:5,1:5]
+```
+```{r, echo=FALSE}
+knitr::kable(data.frame(as.matrix(counts(res[[1]][1:10,1:8]))))
+```
+
+# Saving Data
+
+To facilitate the use of any or all datasets outside of R, you can use `saveATAC()`. 
+`saveATAC` takes two parameters. The first parameter is the `data` object to be saved (ie. a SingleCellExperiment object
+from `queryATAC()`). The second paramter is a string specifying the directory you would like data to be saved in. 
+Note that the output directory should not already exist.
+
+To save the data from the earlier example to disk, use the following commands.
+
+```{r, eval=FALSE}
+res = queryATAC(geo_accession = "GSE89362")[[1]]
+saveATAC(res, '~/Downloads/GSE89362')
+```
+The result is three files saving the scATAC-seq dataset in the Matrix Market format that can be used in other programs. 
+A fourth csv file will be saved if cell type annotations or cluster assignments are available in the dataset.
+
+
+# Session Information
+```{r}
+sessionInfo()
+```

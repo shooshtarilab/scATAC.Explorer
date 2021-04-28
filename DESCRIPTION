@@ -15,8 +15,7 @@ Authors@R:
     person(given="Parisa",
             family="Shooshtari",
             role = c("aut"),
-            email="pshoosh@uwo.ca"),
-     
+            email="pshoosh@uwo.ca")
 	  )
 Description: 
     This package provides a tool to search and download a collection of publicly available single cell
@@ -37,6 +36,7 @@ Depends:
     SingleCellExperiment,
     BiocFileCache,
     data.table,
+    utils,
     S4Vectors
 biocViews: 
     SingleCellData, 

@@ -42,18 +42,16 @@ saveATAC <- function(object, outdir){
                             sep='_'))
     cellID_name <- file.path(outdir,
                            paste(object@metadata$geo_accession,
-                                 "barcodes.tsv",
-                                 sep='_'))
+                           "barcodes.tsv",
+                           sep='_'))
     peaks_name <- file.path(outdir,
                            paste(object@metadata$geo_accession,
-                                 "peaks.tsv",
-                                 sep='_'))
+                           "peaks.tsv",
+                           sep='_'))
     label_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
                             "cell_types_and_clusters.csv",
                             sep='_'))
-    #TODO may need to add an additional option for saving multiple assays if we
-    # end up storing them in a single object
 
     # will always have matrix, cellID, and peaks
     Matrix::writeMM(SingleCellExperiment::counts(object), file=expr_name)

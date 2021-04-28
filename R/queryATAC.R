@@ -127,16 +127,12 @@ queryATAC <- function(geo_accession=NULL,
         df <- df[toupper(df$Genome_Build) %like% toupper(genome_build),]
     }
     if (!is.null(category)) {
-        #TODO this column is a list of strings separated by "+",
-        # need to actually read it as a list
         df <- df[toupper(df$broad_cell_categories) %like% toupper(category),]
     }
     if (!is.null(tissue)) {
-        #TODO also a list
         df <- df[toupper(df$tissue_type) %like% toupper(tissue),]
     }
     if (!is.null(disease)) {
-        #TODO also a list
         df <- df[toupper(df$Disease) %like% toupper(disease),]
     }
 
