@@ -22,13 +22,12 @@
 #' @param tissue Return datasets based on tissues sampled (ex. Blood)
 #' @param disease Return datasets based on sampled disease (ex. carcinoma, leukemia, diabetes)
 #' @param metadata_only Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE
-#' @param sparse Return expression as a sparse matrix.
-#'                  Uses less memory but is less convenient to view, recommended only if encounter memory issues with dense data. Defaults to FALSE.
+#' @param sparse Return expression as a sparse matrix. Reccomended to use sparse format, as dense formats tend to be excessively large.
 #' @keywords tumour
 #' @importFrom methods new
 #' @importFrom Matrix Matrix
 #' @importFrom SingleCellExperiment SingleCellExperiment
-#' @importFrom data.table like
+#' @importFrom data.table %like%
 #' @importFrom S4Vectors metadata
 #' @export
 #' @return A list containing a table of metadata or
@@ -105,8 +104,6 @@ queryATAC <- function(geo_accession=NULL,
         df <- df[toupper(df$sequencing_tech) == toupper(sequence_tech),]
     }
     if (!is.null(score_type)) {
-        #TODO eventually this will become a way to select which type of score you want to
-        # download since we will store multiple types
         df <- df[toupper(df$score_type) == toupper(score_type) ,]
     }
     if (!is.null(has_clusters)) {

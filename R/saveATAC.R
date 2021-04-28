@@ -13,6 +13,7 @@
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @importFrom SingleCellExperiment colData
 #' @importFrom Matrix Matrix
+#' @importFrom utils write.csv
 #' @export
 #' @return Nothing
 #'

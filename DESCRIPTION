@@ -1,4 +1,4 @@
-Package: scATACexplorer
+Package: scATAC.Explorer
 Title: 
     A Collection of Single-cell ATAC Sequencing Datasets and 
     Corresponding Metadata 
@@ -6,19 +6,19 @@ Version: 0.99.0
 Authors@R: 
     c(person(given = "Erik",
             family = "Christensen",
-            role = c("aut", "cre"),
+            role = c("aut"),
             email = "echris3@uwo.ca"),
+    person(given="Arrian",
+            family="Gibson-Khademi",
+            role = c("aut","cre"),
+            email="agibsonk@uwo.ca"),
     person(given="Parisa",
             family="Shooshtari",
             role = c("aut"),
             email="pshoosh@uwo.ca"),
-    person(given="Arrian",
-            family="Gibson-Khademi",
-            role = c("aut"),
-            email="agibsonk@uwo.ca")      
+     
 	  )
 Description: 
-    #TODO
     This package provides a tool to search and download a collection of publicly available single cell
     ATAC-seq datasets and their metadata. scATAC-Explorer aims to act as a single 
     point of entry for users looking to study single cell ATAC-seq data. 

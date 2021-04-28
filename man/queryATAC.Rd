@@ -55,8 +55,7 @@ queryATAC(
 
 \item{metadata_only}{Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE}
 
-\item{sparse}{Return expression as a sparse matrix.
-Uses less memory but is less convenient to view, recommended only if encounter memory issues with dense data. Defaults to FALSE.}
+\item{sparse}{Return expression as a sparse matrix. Reccomended to use sparse format, as dense formats tend to be excessively large.}
 }
 \value{
 A list containing a table of metadata or
