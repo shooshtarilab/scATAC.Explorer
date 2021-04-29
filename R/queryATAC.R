@@ -16,7 +16,6 @@
 #' @param has_clusters Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)
 #' @param has_cell_type Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
 #' @param organism Search by source organism used in the study, for example human or mouse.
-#' #TODO update docs
 #' @param genome_build Return datasets built only using specified genome build (ex. hg19)
 #' @param category Return datasets based on broad cell categories (ex. Hematopoetic cells). To view cell categories available, query metadata.
 #' @param tissue Return datasets based on tissues sampled (ex. Blood)
@@ -43,7 +42,7 @@
 #' res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
 #'
 #' ## Retrieve a single dataset identified from the table
-#' res <- queryATAC(geo_accession = "GSE89362") #TODO maybe update this
+#' res <- queryATAC(geo_accession = "GSE89362")
 
 queryATAC <- function(geo_accession=NULL,
                     author=NULL,
