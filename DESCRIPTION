@@ -43,5 +43,7 @@ biocViews:
     SequencingData, 
     ExpressionData, 
     GEO, 
+    Tissue,
+    Genome,
     PackageTypeData
 BugReports: https://github.com/shooshtarilab/scATACseq/issues
