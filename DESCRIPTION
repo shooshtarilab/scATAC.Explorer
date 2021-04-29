@@ -39,8 +39,7 @@ Depends:
     utils,
     S4Vectors
 biocViews: 
-    SingleCellData, 
-    ATACSeq, 
+    SingleCellData,  
     SequencingData, 
     ExpressionData, 
     GEO, 
