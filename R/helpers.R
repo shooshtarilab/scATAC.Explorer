@@ -15,16 +15,14 @@ fetchATAC <- function(df, row, sparse){
     bfc <- BiocFileCache(cache_path, ask = FALSE)
     if (sparse == FALSE){
         if (df[row,'dense_matrix_link']==""){
-            #TODO throw error, print message
             stop(paste(df[row,'accession'],
-                       "has no dense matrix, use sparse=TRUE to download it."))
+            "has no dense matrix, use sparse=TRUE to download it."))
         }
         expression <- downloadATAC(df, row, 'dense_matrix_link', bfc)
     } else if (sparse == TRUE){
         if (df[row,'sparse_matrix_link']==""){
-            #TODO throw error, print message
             stop(paste(df[row,'accession'],
-                       "has no sparse matrix, use sparse=FALSE to download it."))
+            "has no sparse matrix, use sparse=FALSE to download it."))
         }
         expression <- downloadATAC(df, row, 'sparse_matrix_link', bfc)
     }
@@ -47,9 +45,6 @@ fetchATAC <- function(df, row, sparse){
                         summary = df[row,'Data_Summary'],
                         cells = colnames(expression),
                         matrix_name = df[row, 'matrix_names'],
-
-                        #TODO maybe figure out how to make this a dataframe with
-                        #the first few columns if a dataset has multiple
                         #identifiers for each gene
                         regions = row.names(expression),
                         geo_accession = df[row, 'accession'])

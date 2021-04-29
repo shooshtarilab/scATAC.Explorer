@@ -55,11 +55,10 @@ queryATAC <- function(geo_accession=NULL,
                     has_clusters=NULL,
                     has_cell_type=NULL,
                     organism=NULL,
-                    genome_build=NULL, #TODO add this code
-                    category=NULL, #TODO add code
-                    tissue=NULL, #TODO add code
-                    disease=NULL, #TODO add code
-
+                    genome_build=NULL,
+                    category=NULL,
+                    tissue=NULL,
+                    disease=NULL,
                     metadata_only=FALSE,
                     sparse = TRUE){
     df <- scatac_meta
@@ -100,7 +99,6 @@ queryATAC <- function(geo_accession=NULL,
         df <- df[df$PMID == pmid,]
     }
     if (!is.null(sequence_tech)) {
-        #TODO
         df <- df[toupper(df$sequencing_tech) == toupper(sequence_tech),]
     }
     if (!is.null(score_type)) {

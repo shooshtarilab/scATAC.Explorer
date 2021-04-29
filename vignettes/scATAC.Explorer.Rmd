@@ -51,7 +51,7 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 You can, for instance, view only breast cancer datasets by using 
 
 ```{r}
-res = queryATAC(tumour_type = 'leukemia', metadata_only = TRUE)[[1]]
+res = queryATAC(disease = 'leukemia', metadata_only = TRUE)[[1]]
 ```
 ```{r, echo=FALSE}
 knitr::kable(head(res[,1:5]))
@@ -114,7 +114,7 @@ To access the expression data for a result, use
 View(counts(res[[1]]))
 ```
 ```{r, echo=FALSE}
-knitr::kable(head(counts(res[[1]])[,1:2]))
+knitr::kable(data.frame(as.matrix(counts(res[[1]][1:10,1:8]))))
 ```
 
 Cell type labels and/or cluster assignments are stored under `colData(res[[1]])` for datasets 

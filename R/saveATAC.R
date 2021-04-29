@@ -41,13 +41,13 @@ saveATAC <- function(object, outdir){
                             "matrix.mtx",
                             sep='_'))
     cellID_name <- file.path(outdir,
-                           paste(object@metadata$geo_accession,
-                           "barcodes.tsv",
-                           sep='_'))
+                            paste(object@metadata$geo_accession,
+                            "barcodes.tsv",
+                            sep='_'))
     peaks_name <- file.path(outdir,
-                           paste(object@metadata$geo_accession,
-                           "peaks.tsv",
-                           sep='_'))
+                            paste(object@metadata$geo_accession,
+                            "peaks.tsv",
+                            sep='_'))
     label_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
                             "cell_types_and_clusters.csv",

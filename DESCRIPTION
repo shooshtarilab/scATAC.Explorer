@@ -32,7 +32,7 @@ VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Imports: methods, Matrix
 Depends: 
-    R (>= 4.0),
+    R (>= 4.1),
     SingleCellExperiment,
     BiocFileCache,
     data.table,
