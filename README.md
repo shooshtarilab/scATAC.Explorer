@@ -123,6 +123,7 @@ This will return a list of metadata for all datasets that have cell-type annotat
 
 For each SingleCellExperiment object returned, cell label or clustering annotations are also stored within the object. This can be accessed by using _colData()_  
 ```
+> res = queryATAC(geo_accession = "GSE144692")
 > colData(res[[1]])
 ```
 ![Screenshot of the cell type labels](docs/cellTypeAnnotations.png)
