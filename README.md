@@ -162,6 +162,6 @@ Three files will always be saved: a counts .mtx file, a peak region .tsv file, a
 
 ## System Requirements
 
-While many of the datasets included in this package are small enough to be loaded and stored, even as dense matrices, on machines with an 'average' amount of memory (8-32gb), there are a few larger datasets that cannot be fully manipulated without a significant amount of memory. With this in mind, we recommend using `sparse = TRUE` when possible and using a system with at least 64gb of RAM for full functionality.
+While many of the datasets included in this package are small enough to be loaded and stored, even as dense matrices, on machines with an 'average' amount of memory (8-32gb), there are a few larger datasets that will take up a significant amount of this memory individually. With this in mind, we recommend always using `sparse = TRUE` when possible and using a system with at least 64gb of RAM for full functionality.
 
-If you are experience crashes due to memory limitations, try using `sparse = TRUE` or grabbing datasets individually using the `geo_accession` parameter.
+If you have 8-16gb of memory, or are encountering crashes due to memory limitations, try grabbing datasets individually using the `accession` parameter.
