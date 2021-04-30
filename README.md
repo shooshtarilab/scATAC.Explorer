@@ -1,4 +1,4 @@
-# scATAC-Explorer
+# scATAC.Explorer
 
 ## Introduction
 
