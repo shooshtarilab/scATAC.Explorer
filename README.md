@@ -44,7 +44,7 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 
 | Search Parameter | Description                                     | Examples                |
 | ---------------- | ----------------------------------------------- | ----------------------- |
-| geo_accession    | Search by GEO accession number                  | GSE129785, GSE89362     |
+| accession        | Search by unique accession number               | GSE129785, GSE89362     |
 | has_cell_types   | Filter by presence of cell-type annotations     | TRUE, FALSE             |
 | has_clusters     | Filter by presence of cluster results           | TRUE, FALSE             |
 | disease          | Search by disease                               | Carcinoma, Leukemia     |
@@ -66,7 +66,7 @@ In order to search by single years and a range of years, the package looks for s
 Once you've found a field to search on, you can get your data. 
 
 ```
-> res = queryATAC(geo_accession = "GSE89362")
+> res = queryATAC(accession = "GSE89362")
 ```
 
 This will return a list containing dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object, with the following metadata list:
@@ -84,7 +84,7 @@ This will return a list containing dataset GSE89362. The dataset is stored as a 
 | author        | The first author of the paper presenting the data |
 | disease       | The diseases sampled cells were sampled from |
 | summary       | A broad summary of the study conditions the sample was assayed from |
-| geo_accession | The GEO accession ID for the dataset |
+| accession     | The GEO accession ID for the dataset |
 
 #### Accessing data
 
@@ -116,14 +116,14 @@ Say you want to compare chromatin accessibility between different cell types. To
 This will return a list of metadata for all datasets that have cell-type annotations available. We can see there is a dataset with 5 matrices, GSE144692, that contains cell type data. By examining the _Data_Summary_ and _matrix_names_ field of the metadata, we can see each matrix contains cells isolated from Type 1 Diabetes patients. :
 
 ```
-> res = queryATAC(geo_accession = "GSE144692", metadata_only = TRUE)
+> res = queryATAC(accession = "GSE144692", metadata_only = TRUE)
 > View(res[[1]])
 ```
 ![Screenshot of datasets with cell type labels](docs/GSE144692DataSummary.png)
 
 For each SingleCellExperiment object returned, cell label or clustering annotations are also stored within the object. This can be accessed by using _colData()_  
 ```
-> res = queryATAC(geo_accession = "GSE144692")
+> res = queryATAC(accession = "GSE144692")
 > colData(res[[1]])
 ```
 ![Screenshot of the cell type labels](docs/cellTypeAnnotations.png)
@@ -137,7 +137,7 @@ Datasets retrieved using scATAC.Explorer can easily be converted to Seurat objec
 ```
 library(Seurat)
 library(Signac)
-> res = queryATAC(geo_accession = "GSE89362")
+> res = queryATAC(accession = "GSE89362")
 > GSE89362_assay <- CreateChromatinAssay(counts = counts(res[[1]]), sep = c("-", "-"))
 > GSE89362_obj <- CreateSeuratObject(counts = GSE89362_assay , assay = "peaks")
 > GSE89362_obj
@@ -151,7 +151,7 @@ To facilitate the use of any or all datasets outside of R, you can use `saveATAC
 To save the data from the earlier example to disk, use the following commands.
 
 ```
-> res = queryATAC(geo_accession = "GSE89362")[[1]]
+> res = queryATAC(accession = "GSE89362")[[1]]
 > saveATAC(res, './Output')
 [1] "Done! Check ./Output for file"
 ```
