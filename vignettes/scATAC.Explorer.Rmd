@@ -146,7 +146,7 @@ knitr::kable(head(colData(res[[1]])))
 The first column of this dataframe contains the cell cluster assignment (if available), and the second contains the cell type assignment (if available). The row names of the dataframe specify the cell ID/barcode the annotation belongs to.
 
 ## Example: Accessing counts matrix
-####### TODO: ASK ERIC ABOUT counts below and the data frame display
+
 The counts matrix can be accessed using the counts() function, stored in a sparse matrix format by default:
 ```{r, eval=FALSE}
 res = queryATAC(accession = "GSE89362")
