@@ -69,7 +69,7 @@ Once you've found a field to search on, you can get your data.
 > res = queryATAC(geo_accession = "GSE89362")
 ```
 
-This will return a list containing dataset GSE131688. The dataset is stored as a `SingleCellExperiment` object, with the following metadata list:
+This will return a list containing dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object, with the following metadata list:
 
 #### Metadata
 | Attribute     | Description |
