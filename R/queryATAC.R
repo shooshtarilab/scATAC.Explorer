@@ -6,7 +6,7 @@
 #' if queryATAC is called without any options it will retrieve all available datasets.
 #' This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
 #' In most cases it is recommended to instead filter databases with some criteria.
-#' @param geo_accession Search by geo accession number. Good for returning individual datasets
+#' @param accession Search by geo accession number. Good for returning individual datasets
 #' @param author Search by the author who published the dataset
 #' @param journal Search by the journal the dataset was published in.
 #' @param year Search by exact year or year ranges with '<', '>', or '-'. For example, you can return datasets newer than 2013 with '>2013'
@@ -42,9 +42,9 @@
 #' res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
 #'
 #' ## Retrieve a single dataset identified from the table
-#' res <- queryATAC(geo_accession = "GSE89362")
+#' res <- queryATAC(accession = "GSE89362")
 
-queryATAC <- function(geo_accession=NULL,
+queryATAC <- function(accession=NULL,
                     author=NULL,
                     journal=NULL,
                     year=NULL,
@@ -61,8 +61,8 @@ queryATAC <- function(geo_accession=NULL,
                     metadata_only=FALSE,
                     sparse = TRUE){
     df <- scatac_meta
-    if (!is.null(geo_accession)) {
-        df <- df[df$accession == geo_accession,]
+    if (!is.null(accession)) {
+        df <- df[df$accession == accession,]
     }
     if (!is.null(author)) {
         df <- df[toupper(df$author) == toupper(author),]

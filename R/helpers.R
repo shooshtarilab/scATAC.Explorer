@@ -47,7 +47,7 @@ fetchATAC <- function(df, row, sparse){
                         matrix_name = df[row, 'matrix_names'],
                         #identifiers for each gene
                         regions = row.names(expression),
-                        geo_accession = df[row, 'accession'])
+                        accession = df[row, 'accession'])
     if (is.null(labels)){
         dataset <- SingleCellExperiment(list(counts = expression),
                                             metadata = dataset_data_meta)

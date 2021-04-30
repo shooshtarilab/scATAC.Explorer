@@ -59,7 +59,7 @@ knitr::kable(head(res[,1:5]))
 
 | Search Parameter | Description                                     | Examples                |
 | ---------------- | ----------------------------------------------- | ----------------------- |
-| geo_accession    | Search by GEO accession number                  | GSE129785, GSE89362     |
+| accession        | Search by unique accession number               | GSE129785, GSE89362     |
 | has_cell_types   | Filter by presence of cell-type annotations     | TRUE, FALSE             |
 | has_clusters     | Filter by presence of cluster results           | TRUE, FALSE             |
 | disease          | Search by disease                               | Carcinoma, Leukemia     |
@@ -86,7 +86,7 @@ Once you've found a field to search on, you can get your data.
 For this example, we're pulling a specific dataset by its GEO accession ID.
 
 ```{r}
-res = queryATAC(geo_accession = "GSE89362")
+res = queryATAC(accession = "GSE89362")
 ```
 
 This will return a list containing dataset GSE89362. 
@@ -105,7 +105,7 @@ which has the following metadata list
 | author        | The first author of the paper presenting the data |
 | disease       | The diseases sampled cells were sampled from |
 | summary       | A broad summary of the study conditions the sample was assayed from |
-| geo_accession | The GEO accession ID for the dataset |
+| accession | The GEO accession ID for the dataset |
 
 : (\#tab:table2) Metadata attributes in the `SingleCellExperiment` object.
 
@@ -149,7 +149,7 @@ The first column of this dataframe contains the cell cluster assignment (if avai
 ####### TODO: ASK ERIC ABOUT counts below and the data frame display
 The counts matrix can be accessed using the counts() function, stored in a sparse matrix format by default:
 ```{r, eval=FALSE}
-res = queryATAC(geo_accession = "GSE89362")
+res = queryATAC(accession = "GSE89362")
 counts(res[[1]])[1:5,1:5]
 ```
 ```{r, echo=FALSE}
@@ -166,7 +166,7 @@ Note that the output directory should not already exist.
 To save the data from the earlier example to disk, use the following commands.
 
 ```{r, eval=FALSE}
-res = queryATAC(geo_accession = "GSE89362")[[1]]
+res = queryATAC(accession = "GSE89362")[[1]]
 saveATAC(res, '~/Downloads/GSE89362')
 ```
 The result is three files saving the scATAC-seq dataset in the Matrix Market format that can be used in other programs. 
