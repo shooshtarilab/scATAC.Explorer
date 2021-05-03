@@ -161,7 +161,7 @@ library(ggplot2)
   theme(legend.position="none")
 > UMAP.plt
 ```
-![Screenshot of datasets with cell type labels](docs/UMAPresults.png)
+![GSE89362 UMAP projection plot](docs/UMAPresults.png)
 
 ## Saving Data
 
