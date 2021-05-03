@@ -144,6 +144,25 @@ library(Signac)
 ```
 ![Screenshot of datasets with cell type labels](docs/seuratObjectConversion.png)
 
+Once converted to a Seurat object, Signac functions can be used to preform further analysis. A quick example of this is shown by generating UMAP projections of cells retrieved from GSE89362.
+```
+library(ggplot2)
+> GSE89362_obj <- RunTFIDF(GSE89362_obj)
+# setting cutoff to be top 100% so every feature gets a percentile rank assigned to it
+> GSE89362_obj <- FindTopFeatures(GSE89362_obj, min.cutoff = "q0")
+> GSE89362_obj <- RunSVD(GSE89362_obj)
+
+# run UMAP reduction
+> GSE89362_obj <- RunUMAP(GSE89362_obj, dims = 2:30, reduction = 'lsi')
+
+# plotting UMAP
+> UMAP.plt <- DimPlot(GSE89362_obj, reduction = "umap") + 
+  labs(title = "GSE89362 UMAP Visualization") +
+  theme(legend.position="none")
+> UMAP.plt
+```
+![Screenshot of datasets with cell type labels](docs/UMAPresults.png)
+
 ## Saving Data
 
 To facilitate the use of any or all datasets outside of R, you can use `saveATAC()`. `saveATAC` takes two parameters, one a `ATAC_data` object to be saved, and the other the directory you would like data to be saved in. Note that the output directory should not already exist.
@@ -157,7 +176,7 @@ To save the data from the earlier example to disk, use the following commands.
 ```
 Three files will always be saved: a counts .mtx file, a peak region .tsv file, and a cell ID/Barcodes .tsv file. This format is following the Market Matrix format that can be used in other programs. If the SingleCellExperiment contained cell type or cell cluster annotations in it's _colData_, a csv file will be generated containing the annotations.
 
-![Screenshot of the saveTME files](docs/saveATACfiles.png)
+![Screenshot of the saveATAC files](docs/saveATACfiles.png)
 
 
 ## System Requirements
