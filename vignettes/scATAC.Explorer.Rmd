@@ -109,7 +109,7 @@ which has the following metadata list
 
 : (\#tab:table2) Metadata attributes in the `SingleCellExperiment` object.
 
-To access the expression data for a result, use
+To access the chromatin accessibility counts data for a result, use
 ```{r, eval=FALSE}
 View(counts(res[[1]]))
 ```
@@ -144,17 +144,6 @@ knitr::kable(head(colData(res[[1]])))
 ```
 
 The first column of this dataframe contains the cell cluster assignment (if available), and the second contains the cell type assignment (if available). The row names of the dataframe specify the cell ID/barcode the annotation belongs to.
-
-## Example: Accessing counts matrix
-
-The counts matrix can be accessed using the counts() function, stored in a sparse matrix format by default:
-```{r, eval=FALSE}
-res = queryATAC(accession = "GSE89362")
-counts(res[[1]])[1:5,1:5]
-```
-```{r, echo=FALSE}
-knitr::kable(data.frame(as.matrix(counts(res[[1]][1:10,1:8]))))
-```
 
 # Saving Data
 
