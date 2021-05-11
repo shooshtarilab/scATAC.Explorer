@@ -13,8 +13,8 @@
 #' @param pmid Search by Pubmed ID associated with the study. Good for returning individual datasets
 #' @param sequence_tech Search by sequencing technology used to sample the cells.
 #' @param score_type Search by type of score (TPM, FPKM, raw count)
-#' @param has_clusters Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)
-#' @param has_cell_type Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
+#' @param has_cluster_annotation Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)
+#' @param has_cell_type_annotation Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
 #' @param organism Search by source organism used in the study, for example human or mouse.
 #' @param genome_build Return datasets built only using specified genome build (ex. hg19)
 #' @param category Return datasets based on broad cell categories (ex. Hematopoetic cells). To view cell categories available, query metadata.
@@ -39,7 +39,7 @@
 #'
 #' ## Retrieve a filtered metadata table that only shows datasets with
 #' ## cell type annotations and clustering annotations
-#' res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
+#' res <- queryATAC(has_cluster_annotation = TRUE, has_cell_type_annotation = TRUE, metadata_only = TRUE)
 #'
 #' ## Retrieve a single dataset identified from the table
 #' res <- queryATAC(accession = "GSE89362")
@@ -51,8 +51,8 @@ queryATAC <- function(accession=NULL,
                     pmid=NULL,
                     sequence_tech=NULL,
                     score_type=NULL,
-                    has_clusters=NULL,
-                    has_cell_type=NULL,
+                    has_cluster_annotation=NULL,
+                    has_cell_type_annotation=NULL,
                     organism=NULL,
                     genome_build=NULL,
                     category=NULL,
@@ -103,17 +103,17 @@ queryATAC <- function(accession=NULL,
     if (!is.null(score_type)) {
         df <- df[toupper(df$score_type) == toupper(score_type) ,]
     }
-    if (!is.null(has_clusters)) {
-        if (has_clusters) {
+    if (!is.null(has_cluster_annotation)) {
+        if (has_cluster_annotation) {
             df <- df[df$Clustering_Results_Available == 'Y' ,]
-        }else if (!has_clusters) {
+        }else if (!has_cluster_annotation) {
             df <- df[df$Clustering_Results_Available == 'N' ,]
         }
     }
-    if (!is.null(has_cell_type)) {
-        if (has_cell_type) {
+    if (!is.null(has_cell_type_annotation)) {
+        if (has_cell_type_annotation) {
             df <- df[df$cell_type_labels_available == 'Y', ]
-        }else if (!has_cell_type) {
+        }else if (!has_cell_type_annotation) {
             df <- df[df$cell_type_labels_available == 'N', ]
         }
     }

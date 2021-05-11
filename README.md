@@ -42,19 +42,19 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 
 ![Screenshot of the metadata table](docs/leukemiaQueryMetadataTable.png)
 
-| Search Parameter | Description                                     | Examples                |
-| ---------------- | ----------------------------------------------- | ----------------------- |
-| accession        | Search by unique accession number               | GSE129785, GSE89362     |
-| has_cell_types   | Filter by presence of cell-type annotations     | TRUE, FALSE             |
-| has_clusters     | Filter by presence of cluster results           | TRUE, FALSE             |
-| disease          | Search by disease                               | Carcinoma, Leukemia     |
-| author           | Search by first author                          | Satpathy, Cusanovich    |
-| journal          | Search by publication journal                   | Science, Nature, Cell   |
-| year             | Search by year of publication                   | <2015, >2015, 2013-2015 |
-| pmid             | Search by PubMed ID                             | 27526324, 32494068      |
-| sequence_tech    | Search by sequencing technology                 | 10x Genomics Chromium   |
-| organism         | Search by source organism                       | Mus musculus            |
-| sparse           | Return expression in sparse matrices            | TRUE, FALSE             |
+| Search Parameter         | Description                                 | Examples                |
+| ------------------------ | ------------------------------------------- | ----------------------- |
+| accession                | Search by unique accession number           | GSE129785, GSE89362     |
+| has_cell_type_annotation | Filter by presence of cell-type annotations | TRUE, FALSE             |
+| has_cluster_annotation   | Filter by presence of cluster results       | TRUE, FALSE             |
+| disease                  | Search by disease                           | Carcinoma, Leukemia     |
+| author                   | Search by first author                      | Satpathy, Cusanovich    |
+| journal                  | Search by publication journal               | Science, Nature, Cell   |
+| year                     | Search by year of publication               | <2015, >2015, 2013-2015 |
+| pmid                     | Search by PubMed ID                         | 27526324, 32494068      |
+| sequence_tech            | Search by sequencing technology             | 10x Genomics Chromium   |
+| organism                 | Search by source organism                   | Mus musculus            |
+| sparse                   | Return expression in sparse matrices        | TRUE, FALSE             |
 
 #### Searching by year
 
@@ -72,23 +72,23 @@ Once you've found a field to search on, you can get your data.
 This will return a list containing dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object, with the following metadata list:
 
 #### Metadata
-| Attribute     | Description |
-| ------------- | --------------------------------------------------------------- |
-| cells         | A list of cells included in the study |
-| regions       | A list of genomic regions (peaks) included in the study |
-| pmid          | The PubMed ID of the study |
-| technology    | The sequencing technology used |
-| genome_build  | The genome build used for data generation |
-| score_type    | The type of scoring or normalization used on the counts data |
-| organism      | The type of organism from which cells were sequenced |
-| author        | The first author of the paper presenting the data |
-| disease       | The diseases sampled cells were sampled from |
-| summary       | A broad summary of the study conditions the sample was assayed from |
-| accession     | The GEO accession ID for the dataset |
+| Attribute    | Description                                                         |
+| ------------ | ------------------------------------------------------------------- |
+| cells        | A list of cells included in the study                               |
+| regions      | A list of genomic regions (peaks) included in the study             |
+| pmid         | The PubMed ID of the study                                          |
+| technology   | The sequencing technology used                                      |
+| genome_build | The genome build used for data generation                           |
+| score_type   | The type of scoring or normalization used on the counts data        |
+| organism     | The type of organism from which cells were sequenced                |
+| author       | The first author of the paper presenting the data                   |
+| disease      | The diseases sampled cells were sampled from                        |
+| summary      | A broad summary of the study conditions the sample was assayed from |
+| accession    | The GEO accession ID for the dataset                                |
 
 #### Accessing data
 
-To access the sequencing data (a peak-by-cell counts matrix), use the counts() function. _Note: In the example image, a subset of the first 8 rows and columns of matrix were selected for demonstration purposes._
+To access the sequencing data (a peak-by-cell counts matrix), use the counts() function. Rows of the peak-by-cell matrix correspond to genomic regions (in the format of chromsome-start-end) that were sequenced for chromatin accessibility. Each column of the matrix represents a cell (named by the unique cell ID or cell barcode). Individual reads within the matrix specify whether accessibile chromatin was detected within the cell (0 if none detected). _Note: In the example image, a subset of the first 8 rows and columns of matrix were selected for demonstration purposes._
 ```
 > counts(res[[1]])
 ```
@@ -108,7 +108,7 @@ Specific metadata entries can be accessed by specifying the attribute name, for 
 ### Example: Working with datasets containing cell type labels
 Say you want to compare chromatin accessibility between different cell types. To do this, you need datasets that have cell-types labels available. First you will need to query scATAC.Explorer to find any datasets containing your cell types of interest. This can be done by searching using the both the _has_cell_type_ and _metadata_only_ parameters.  
 ```
-> res = queryATAC(has_cell_type = TRUE, metadata_only = TRUE)
+> res = queryATAC(has_cell_type_annotation = TRUE, metadata_only = TRUE)
 > View(res[[1]])
 ```
 ![Screenshot of datasets with cell type labels](docs/datasetsWithCellType.png)
