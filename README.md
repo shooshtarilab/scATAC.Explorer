@@ -179,7 +179,7 @@ library(ggplot2)
 > cluster.plt
 ```
 ![GSE89362 UMAP projection plot](docs/UMAPresults.png)
-![GSE89362 UMAP clustering plot](docs/GSE89362clusterPlot.png.png)
+![GSE89362 UMAP clustering plot](docs/GSE89362clusterPlot.png)
 
 
 ## Saving Data
