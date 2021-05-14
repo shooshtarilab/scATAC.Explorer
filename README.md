@@ -10,6 +10,8 @@ This package will improve the ease of studying and integrating scATAC-seq datase
 
 
 ## Installation
+
+Please note: Your R version should be 4.0.5 or higher. Any dependent packages should be updated to ensure compatibility.
 ``` 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
