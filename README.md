@@ -144,7 +144,7 @@ library(Signac)
 ```
 ![Screenshot of datasets with cell type labels](docs/seuratObjectConversion.png)
 
-Once converted to a Seurat object, Signac functions can be used to preform further analysis. A quick example of this is shown by generating UMAP projections of cells retrieved from GSE89362.
+Once converted to a Seurat object, Signac functions can be used to preform further analysis. A quick example of this is shown by generating UMAP projections and clustering of cells retrieved from GSE89362.
 ```
 library(ggplot2)
 > GSE89362_obj <- RunTFIDF(GSE89362_obj)
@@ -160,8 +160,27 @@ library(ggplot2)
   labs(title = "GSE89362 UMAP Visualization") +
   theme(legend.position="none")
 > UMAP.plt
+
+# clustering
+> GSE89362_obj <- FindNeighbors(
+  object = GSE89362_obj,
+  reduction = 'lsi',
+  dims = 2:30
+)
+
+# algorithm 1 = Using Louvain clustering algorithm
+> GSE89362_obj <- FindClusters(
+  object = GSE89362_obj,
+  resolution = 0.8,
+  algorithm = 1,
+  verbose = FALSE
+)
+> cluster.plt <- DimPlot(object = GSE89362_obj, label = TRUE) + NoLegend()
+> cluster.plt
 ```
 ![GSE89362 UMAP projection plot](docs/UMAPresults.png)
+![GSE89362 UMAP clustering plot](docs/GSE89362clusterPlot.png.png)
+
 
 ## Saving Data
 
