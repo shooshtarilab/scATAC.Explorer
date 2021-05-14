@@ -62,8 +62,8 @@ one or more SingleCellExperiment objects
 }
 \description{
 This function allows you to search and subset included scATAC-seq datasets.
-A named list of scATAC-seq_data objects matching the provided options will be returned,
-In cases where a dataset is represented using multiple matrices, each matrix will be a seperate object within the list.
+A named list of scATAC-seq_data objects matching the provided options will be returned.
+Some included datasets are represented using multiple matrices. Each matrix will be a seperate named object within the list.
 The returned list is named by matrix allow easy identification of data.
 If queryATAC is called without any options it will retrieve all available datasets.
 This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
