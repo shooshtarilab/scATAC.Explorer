@@ -30,7 +30,7 @@ Start by exploring the available datasets through metadata.
 > res = queryATAC(metadata_only = TRUE)
 ```
 
-This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields. Due to some datasets being gathered from different organisims or experimental conditions, some datasets contain multiple data matrices. These are represented as seperate objects where each can be differentiated by the "Data_Summary" and "matrix_names" field in the metadata, which specify the contents of each matrix.
+This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields. Due to some datasets being gathered from different organisims or experimental conditions, some datasets contain multiple data matrices. These are represented as separate objects where each can be differentiated by the "Data_Summary" and "matrix_names" field in the metadata, which specify the contents of each matrix.
 
 Note: in order to keep the function's interface consistent, `queryATAC` always returns a list of objects, even if there is only one object. You may prefer running `res = queryATAC(metadata_only = TRUE)[[1]]` in order to save the dataframe directly.
 
