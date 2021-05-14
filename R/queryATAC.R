@@ -1,9 +1,10 @@
 #' A function to query scATAC-seq datasets available in this package
 #'
 #' This function allows you to search and subset included scATAC-seq datasets.
-#' A named list of scATAC-seq_data objects matching the provided options will be returned,
-#' In cases where multiple matrices are available for each dataset, each matrix will be a seperate object within the list
-#' if queryATAC is called without any options it will retrieve all available datasets.
+#' A named list of SingleCellExperiment objects matching the provided options will be returned.
+#' In cases where a dataset is represented using multiple matrices, each matrix will be a seperate object within the list.
+#' The returned list is named by matrix allow easy identification of data.
+#' If queryATAC is called without any options it will retrieve all available datasets.
 #' This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
 #' In most cases it is recommended to instead filter databases with some criteria.
 #' @param accession Search by geo accession number. Good for returning individual datasets
