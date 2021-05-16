@@ -4,12 +4,14 @@
 
 scATAC-Explorer is a curated collection of publicly available scATAC-seq (Single Cell Assay for Transposase-Accessible Chromatin using sequencing) datasets. It aims to provide a single point of entry for users looking to study chromatin accessibility at the single-cell level. 
 
-Users can quickly search available datasets using the metadata table, and then download the datasets they are interested in for analysis. Optionally, users can save the datasets for use in applications other than R. 
+Users can quickly search publicly available datasets using the metadata table, and then download the datasets they are interested in for analysis. Optionally, users can save the datasets for use in applications other than R. 
 
 This package will improve the ease of studying and integrating scATAC-seq datasets. Developers may use this package to obtain data for analysis of multiple tissues, diseases, cell types, or developmental stages. It can also be used to obtain data for validation of new algorithms. 
 
 
 ## Installation
+
+Please note: Your R version should be 4.0.5 or higher. Any dependent packages should be updated to ensure compatibility.
 ``` 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
@@ -28,7 +30,7 @@ Start by exploring the available datasets through metadata.
 > res = queryATAC(metadata_only = TRUE)
 ```
 
-This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields. Due to some datasets being gathered from different organisims or experimental conditions, some datasets contain multiple data matrices. These are represented as seperate objects where each can be differentiated by the "Data_Summary" and "matrix_names" field in the metadata, which specify the contents of each matrix.
+This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields. Due to some datasets being gathered from different organisims or experimental conditions, some datasets contain multiple data matrices. These are represented as separate objects where each can be differentiated by the "Data_Summary" and "matrix_names" field in the metadata, which specify the contents of each matrix.
 
 Note: in order to keep the function's interface consistent, `queryATAC` always returns a list of objects, even if there is only one object. You may prefer running `res = queryATAC(metadata_only = TRUE)[[1]]` in order to save the dataframe directly.
 
