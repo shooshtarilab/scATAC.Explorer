@@ -106,7 +106,7 @@ This will return a list containing dataset GSE89362. The dataset is stored as a 
 
 #### Datasets represented by multiple matrices
 
-Due to some datasets contain data gathered from several different organisims (such as both mice and human) or experimental conditions, some datasets are represtented by several entries with the same reference and accession, but containing different data. The "Data_Summary" and "matrix_names" field in the returned metadata table specify the contents of datasets with multiple entries. An example is given below:
+Due to some datasets contain data gathered from several different organisims (such as both mice and human) or experimental conditions, some datasets are represtented by several entries with the same reference and accession, but containing different data. The *Data_Summary* and *matrix_names* field in the returned metadata table specify the contents of datasets with multiple entries. An example is given below:
 
 This single study collected data relating to carcinoma, and was found using *queryATAC(disease = carcinoma, metadata_only = TRUE)*. As shown below, there are 4 entries for data from one study.
 
@@ -173,13 +173,14 @@ The rownames of this dataframe contains the cell barcode or cell ID, the second 
 
 ### Example: Using returned datasets with scATAC-seq analysis pipelines
 
-Analysis pipelines are commonly used in research for working with scATAC-seq data. Many of these pipelines have been created as packages for R. Not every pipeline uses the SingleCellExperiment object as an input, such as the commonly used R toolkit Seurat (more info at <https://satijalab.org/seurat/>), extended for scATAC-seq analysis by Signac (more info at <https://satijalab.org/signac/index.html>). Seurat is a R package commonly used for both scRNA-seq and scATAC-seq analysis. Datasets from scATAC.Explorer can be easily converted to Seurat objects :
+Analysis pipelines are commonly used in research for working with scATAC-seq data. Many of these pipelines have been created as packages for R. Not every pipeline uses the SingleCellExperiment object as an input, such as the commonly used R toolkit Seurat (more info at <https://satijalab.org/seurat/>), extended for scATAC-seq analysis by Signac (more info at <https://satijalab.org/signac/index.html>). Seurat is a R package commonly used for both scRNA-seq and scATAC-seq analysis.
 
-Datasets retrieved using scATAC.Explorer can easily be converted to Seurat objects :
+Datasets retrieved using scATAC.Explorer can easily be converted to Seurat objects:
 
 ```R
 library(Seurat)
 library(Signac)
+# GSE89362 is used as an example, as it is the smallest dataset included within scATAC.Explorer
 > res = queryATAC(accession = "GSE89362")
 > GSE89362_assay <- CreateChromatinAssay(counts = counts(res[[1]]), sep = c("-", "-"))
 > GSE89362_obj <- CreateSeuratObject(counts = GSE89362_assay , assay = "peaks")
@@ -188,16 +189,21 @@ library(Signac)
 
 ![Screenshot of datasets with cell type labels](docs/seuratObjectConversion.png)
 
-Once converted to a Seurat object, Signac functions can be used to preform further analysis. A quick example of this is shown by generating UMAP projections and clustering of cells retrieved from GSE89362.
+Once converted to a Seurat object, functions from Signac can be used to preform further analysis. A quick example of this is shown by generating UMAP projections and clustering of cells retrieved from GSE89362.
 
 ```R
 library(ggplot2)
+# these three function below preform Latent Semantic Indexing (LSI), neccessary for Seurat UMAP projection and clustering
 > GSE89362_obj <- RunTFIDF(GSE89362_obj)
 # setting cutoff to be top 100% so every feature gets a percentile rank assigned to it
 > GSE89362_obj <- FindTopFeatures(GSE89362_obj, min.cutoff = "q0")
 > GSE89362_obj <- RunSVD(GSE89362_obj)
 
-# run UMAP reduction
+# generates a correlation plot between sequencing depth and LSI components. By observing the plot we can see the first LSI component is highly correlated with sequencing depth.
+# due to this, the first dimension of the LSI component will not be used in further analysis as a quality control step.
+> DepthCor(GSE89362_obj)
+
+# run UMAP reduction, excluding the LSI first dimension as we are 
 > GSE89362_obj <- RunUMAP(GSE89362_obj, dims = 2:30, reduction = 'lsi')
 
 # plotting UMAP
@@ -206,20 +212,22 @@ library(ggplot2)
   theme(legend.position="none")
 > UMAP.plt
 
-# clustering
+# clustering first by finding neighbours
 > GSE89362_obj <- FindNeighbors(
   object = GSE89362_obj,
   reduction = 'lsi',
   dims = 2:30
 )
 
-# algorithm 1 = Using Louvain clustering algorithm
+# finding and creating cluster annotations
+# algorithm 1 = Louvain clustering algorithm
 > GSE89362_obj <- FindClusters(
   object = GSE89362_obj,
-  resolution = 0.8,
+  resolution = 1.1,
   algorithm = 1,
   verbose = FALSE
 )
+# generating UMAP plot with cluster assignments
 > cluster.plt <- DimPlot(object = GSE89362_obj, label = TRUE) + NoLegend()
 > cluster.plt
 ```
