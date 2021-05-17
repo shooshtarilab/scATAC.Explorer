@@ -148,7 +148,7 @@ Say you want to compare chromatin accessibility between different cell types. To
 > res = queryATAC(has_cell_type_annotation = TRUE, metadata_only = TRUE)
 > View(res[[1]])
 
-```R
+```
 ![Screenshot of datasets with cell type labels](docs/datasetsWithCellType.png)
 
 This will return a list of metadata for all datasets that have cell-type annotations available. We can see there is a dataset with 5 matrices, GSE144692, that contains cell type data. By examining the _Data_Summary_ and _matrix_names_ field of the metadata, we can see each matrix contains cells isolated from Type 1 Diabetes patients. :
