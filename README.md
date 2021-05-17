@@ -2,22 +2,34 @@
 
 ## Introduction
 
-scATAC-Explorer is a curated collection of publicly available scATAC-seq (Single Cell Assay for Transposase-Accessible Chromatin using sequencing) datasets. It aims to provide a single point of entry for users looking to study chromatin accessibility at the single-cell level. 
+scATAC-Explorer is a curated collection of publicly available scATAC-seq (Single Cell Assay for Transposase-Accessible Chromatin using sequencing) datasets. It aims to provide a single point of entry for users looking to study chromatin accessibility at the single-cell level. No standard format for scATAC-seq data exists, so by accessing datasets using scATAC.Explorer, a consistent format is available to users to easily retrieve and integrate multiple datasets together with.
 
-Users can quickly search publicly available datasets using the metadata table, and then download the datasets they are interested in for analysis. Optionally, users can save the datasets for use in applications other than R. 
+Users can quickly search publicly available datasets using the metadata table, and then download the datasets they are interested in for analysis. Optionally, users can save the datasets for use in applications other than R.
 
-This package will improve the ease of studying and integrating scATAC-seq datasets. Developers may use this package to obtain data for analysis of multiple tissues, diseases, cell types, or developmental stages. It can also be used to obtain data for validation of new algorithms. 
-
+This package will improve the ease of studying and integrating scATAC-seq datasets. Developers may use this package to obtain data for analysis of multiple tissues, diseases, cell types, or developmental stages. It can also be used to obtain data for validation of new algorithms.
 
 ## Installation
 
 Please note: Your R version should be 4.0.5 or higher. Any dependent packages should be updated to ensure compatibility.
-``` 
+
+```R
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("SingleCellExperiment")
 library(devtools)
 install_github("shooshtarilab/scATAC.Explorer")
+```
+
+## Dependencies
+
+R package dependencies for scATAC.Explorer include
+
+```R
+  SingleCellExperiment,
+  BiocFileCache,
+  data.table,
+  utils,
+  S4Vectors
 ```
 
 # Tutorial
@@ -26,21 +38,25 @@ install_github("shooshtarilab/scATAC.Explorer")
 
 Start by exploring the available datasets through metadata.
 
-```
+```R
+library(scATAC.Explorer)
 > res = queryATAC(metadata_only = TRUE)
 ```
 
-This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields. Due to some datasets being gathered from different organisims or experimental conditions, some datasets contain multiple data matrices. These are represented as separate objects where each can be differentiated by the "Data_Summary" and "matrix_names" field in the metadata, which specify the contents of each matrix.
+This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields.
 
 Note: in order to keep the function's interface consistent, `queryATAC` always returns a list of objects, even if there is only one object. You may prefer running `res = queryATAC(metadata_only = TRUE)[[1]]` in order to save the dataframe directly.
 
 ![Screenshot of the metadata table](docs/metadataTable.png)
 
-The `metatadata_only` argument can be applied alongside any other argument in order to examine only datasets that have certain qualities. You can, for instance, view only leukemia datasets by using 
+The `metatadata_only` argument can be applied alongside any other argument in order to examine only datasets that have certain qualities. You can, for instance, view only leukemia datasets by using:
 
-```
+```R
 > res = queryATAC(disease = 'leukemia', metadata_only = TRUE)[[1]]
+> View(res)
 ```
+
+There are many parameters available to search for datasets. Below is an example of some of the available parameters that can be searched by.
 
 ![Screenshot of the metadata table](docs/leukemiaQueryMetadataTable.png)
 
@@ -62,81 +78,106 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 
 In order to search by single years and a range of years, the package looks for specific patterns. '2013-2015' will search for datasets published between 2013 and 2015, inclusive. '<2015' will search for datasets published before or in 2015. '>2015' will search for datasets published in or after 2015.
 
-
 ### Getting your first dataset
 
-Once you've found a field to search on, you can get your data. 
+Once you've found a field to search on, and have identified dataset(s) you are interested in, you can retrive their data. By querying without specifying the *metadata_only* parameter to TRUE, the data for the matching dataset(s) will be returned. In our first example we will retrieve a single dataset. This can be done by searching its unique accession ID.
 
-```
+```R
 > res = queryATAC(accession = "GSE89362")
 ```
 
-This will return a list containing dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object, with the following metadata list:
+This will return a list containing dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object. The object contains the peak-by-cell matrix, as well as metadata for the dataset, including:
 
 #### Metadata
+
 | Attribute    | Description                                                         |
 | ------------ | ------------------------------------------------------------------- |
-| cells        | A list of cells included in the study                               |
-| regions      | A list of genomic regions (peaks) included in the study             |
+| cells        | A list of cell names included in the data                           |
+| regions      | A list of genomic regions (peaks) included in the data              |
 | pmid         | The PubMed ID of the study                                          |
 | technology   | The sequencing technology used                                      |
 | genome_build | The genome build used for data generation                           |
 | score_type   | The type of scoring or normalization used on the counts data        |
 | organism     | The type of organism from which cells were sequenced                |
 | author       | The first author of the paper presenting the data                   |
-| disease      | The diseases sampled cells were sampled from                        |
+| disease      | The diseases cells were sampled from                                |
 | summary      | A broad summary of the study conditions the sample was assayed from |
 | accession    | The GEO accession ID for the dataset                                |
 
+#### Datasets represented by multiple matrices
+
+Due to some datasets contain data gathered from several different organisims (such as both mice and human) or experimental conditions, some datasets are represtented by several entries with the same reference and accession, but containing different data. The "Data_Summary" and "matrix_names" field in the returned metadata table specify the contents of datasets with multiple entries. An example is given below:
+
+This single study collected data relating to carcinoma, and was found using *queryATAC(disease = carcinoma, metadata_only = TRUE)*. As shown below, there are 4 entries for data from one study.
+
+![Screenshot of carcinoma metadata search results](docs/CarcinomaDatasets.png)
+
+By examining the *Data_Summary* field of the metadata results, we can see that each object that will be returned from a data query represents a different tissue sample.
+
+![Screenshot of carcinoma metadata data summary fields](docs/CarcinomaDatasetsDataSummary.png)
+
 #### Accessing data
 
-To access the sequencing data (a peak-by-cell counts matrix), use the counts() function. Rows of the peak-by-cell matrix correspond to genomic regions (in the format of chromsome-start-end) that were sequenced for chromatin accessibility. Each column of the matrix represents a cell (named by the unique cell ID or cell barcode). Individual reads within the matrix specify whether accessibile chromatin was detected within the cell (0 if none detected). _Note: In the example image, a subset of the first 8 rows and columns of matrix were selected for demonstration purposes._
-```
+To access the sequencing data (a peak-by-cell counts matrix), use the *counts()* function. Rows of the peak-by-cell matrix correspond to genomic regions (in the format of chromsome-start-end) that presented chromatin accessibility peaks, or pre-defined windows in the genome. Each column of the matrix represents a cell (named by the unique cell ID or cell barcode). Individual reads within the matrix specify whether accessibile chromatin was detected within the cell (0 if none detected). _Note: In the example image, a subset of the first 8 rows and columns of matrix were selected for demonstration purposes._
+
+```R
 > counts(res[[1]])
 ```
-![Screenshot of the metadata table](docs/GSE89362countsMatrix.png)
+
+![Screenshot of counts matrix](docs/GSE89362countsMatrix.png)
 
 Cell type labels and/or cluster assignments are stored under `colData(res[[1]])` for datasets where cell type and/or cluster labels are available.
 
 To access metadata for the first dataset in a query result, use
-```
+
+```R
 > metadata(res[[1]])
 ```
+
 Specific metadata entries can be accessed by specifying the attribute name, for instance
-```
+
+```R
 > metadata(res[[1]])$pmid
 ```
 
 ### Example: Working with datasets containing cell type labels
+
 Say you want to compare chromatin accessibility between different cell types. To do this, you need datasets that have cell-types labels available. First you will need to query scATAC.Explorer to find any datasets containing your cell types of interest. This can be done by searching using the both the _has_cell_type_ and _metadata_only_ parameters.  
-```
+
+```R
 > res = queryATAC(has_cell_type_annotation = TRUE, metadata_only = TRUE)
 > View(res[[1]])
-```
+
+```R
 ![Screenshot of datasets with cell type labels](docs/datasetsWithCellType.png)
 
 This will return a list of metadata for all datasets that have cell-type annotations available. We can see there is a dataset with 5 matrices, GSE144692, that contains cell type data. By examining the _Data_Summary_ and _matrix_names_ field of the metadata, we can see each matrix contains cells isolated from Type 1 Diabetes patients. :
 
-```
+```R
 > res = queryATAC(accession = "GSE144692", metadata_only = TRUE)
 > View(res[[1]])
 ```
+
 ![Screenshot of datasets with cell type labels](docs/GSE144692DataSummary.png)
 
 For each SingleCellExperiment object returned, cell label or clustering annotations are also stored within the object. This can be accessed by using _colData()_  
-```
+
+```R
 > res = queryATAC(accession = "GSE144692")
 > colData(res[[1]])
 ```
+
 ![Screenshot of the cell type labels](docs/cellTypeAnnotations.png)
 
 The rownames of this dataframe contains the cell barcode or cell ID, the second contains the cell type, and the third contains the cluster assignment if available. Any dataset with either cell type or clustering annotations will have this _colData_ available.
 
 ### Example: Using returned datasets with scATAC-seq analysis pipelines
-Analysis pipelines are commonly used in research for working with scATAC-seq data. Many of these pipelines have been created as packages for R. Not every pipeline uses the SingleCellExperiment object as an input, such as the commonly used R toolkit Seurat (more info at https://satijalab.org/seurat/), extended for scATAC-seq analysis by Signac (more info at https://satijalab.org/signac/index.html). Seurat is a R package commonly used for both scRNA-seq and scATAC-seq analysis. Datasets from scATAC.Explorer can be easily converted to Seurat objects : 
+
+Analysis pipelines are commonly used in research for working with scATAC-seq data. Many of these pipelines have been created as packages for R. Not every pipeline uses the SingleCellExperiment object as an input, such as the commonly used R toolkit Seurat (more info at <https://satijalab.org/seurat/>), extended for scATAC-seq analysis by Signac (more info at <https://satijalab.org/signac/index.html>). Seurat is a R package commonly used for both scRNA-seq and scATAC-seq analysis. Datasets from scATAC.Explorer can be easily converted to Seurat objects :
 
 Datasets retrieved using scATAC.Explorer can easily be converted to Seurat objects :
-```
+
+```R
 library(Seurat)
 library(Signac)
 > res = queryATAC(accession = "GSE89362")
@@ -144,10 +185,12 @@ library(Signac)
 > GSE89362_obj <- CreateSeuratObject(counts = GSE89362_assay , assay = "peaks")
 > GSE89362_obj
 ```
+
 ![Screenshot of datasets with cell type labels](docs/seuratObjectConversion.png)
 
 Once converted to a Seurat object, Signac functions can be used to preform further analysis. A quick example of this is shown by generating UMAP projections and clustering of cells retrieved from GSE89362.
-```
+
+```R
 library(ggplot2)
 > GSE89362_obj <- RunTFIDF(GSE89362_obj)
 # setting cutoff to be top 100% so every feature gets a percentile rank assigned to it
@@ -180,9 +223,9 @@ library(ggplot2)
 > cluster.plt <- DimPlot(object = GSE89362_obj, label = TRUE) + NoLegend()
 > cluster.plt
 ```
+
 ![GSE89362 UMAP projection plot](docs/UMAPresults.png)
 ![GSE89362 UMAP clustering plot](docs/GSE89362clusterPlot.png)
-
 
 ## Saving Data
 
@@ -190,15 +233,15 @@ To facilitate the use of any or all datasets outside of R, you can use `saveATAC
 
 To save the data from the earlier example to disk, use the following commands.
 
-```
+```R
 > res = queryATAC(accession = "GSE89362")[[1]]
 > saveATAC(res, './Output')
 [1] "Done! Check ./Output for file"
 ```
+
 Three files will always be saved: a counts .mtx file, a peak region .tsv file, and a cell ID/Barcodes .tsv file. This format is following the Market Matrix format that can be used in other programs. If the SingleCellExperiment contained cell type or cell cluster annotations in it's _colData_, a csv file will be generated containing the annotations.
 
 ![Screenshot of the saveATAC files](docs/saveATACfiles.png)
-
 
 ## System Requirements
 
