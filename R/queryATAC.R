@@ -40,7 +40,9 @@
 #'
 #' ## Retrieve a filtered metadata table that only shows datasets with
 #' ## cell type annotations and clustering annotations
-#' res <- queryATAC(has_cluster_annotation = TRUE, has_cell_type_annotation = TRUE, metadata_only = TRUE)
+#' res <- queryATAC(has_cluster_annotation = TRUE, 
+#'                  has_cell_type_annotation = TRUE, 
+#'                  metadata_only = TRUE)
 #'
 #' ## Retrieve a single dataset identified from the table
 #' res <- queryATAC(accession = "GSE89362")

@@ -20,7 +20,7 @@
 #' @examples
 #'
 #' # Retrieve a previously identified dataset (see queryATAC) and save it to disk
-#' res <- queryATAC(geo_accession = 'GSE89362')[[1]]
+#' res <- queryATAC(accession = 'GSE89362')[[1]]
 #' \dontshow{
 #'          #res <- SingleCellExperiment(list(counts=matrix()))
 #'          tdir = tempdir()

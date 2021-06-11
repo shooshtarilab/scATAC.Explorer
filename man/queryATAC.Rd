@@ -12,8 +12,8 @@ queryATAC(
   pmid = NULL,
   sequence_tech = NULL,
   score_type = NULL,
-  has_clusters = NULL,
-  has_cell_type = NULL,
+  has_cluster_annotation = NULL,
+  has_cell_type_annotation = NULL,
   organism = NULL,
   genome_build = NULL,
   category = NULL,
@@ -38,9 +38,9 @@ queryATAC(
 
 \item{score_type}{Search by type of score (TPM, FPKM, raw count)}
 
-\item{has_clusters}{Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)}
+\item{has_cluster_annotation}{Return only those datasets that have clustering results available, or only those without (TRUE/FALSE)}
 
-\item{has_cell_type}{Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)}
+\item{has_cell_type_annotation}{Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)}
 
 \item{organism}{Search by source organism used in the study, for example human or mouse.}
 
@@ -76,7 +76,9 @@ res <- queryATAC(metadata_only = TRUE)
 
 ## Retrieve a filtered metadata table that only shows datasets with
 ## cell type annotations and clustering annotations
-res <- queryATAC(has_clusters = TRUE, has_cell_type = TRUE, metadata_only = TRUE)
+res <- queryATAC(has_cluster_annotation = TRUE, 
+                 has_cell_type_annotation = TRUE, 
+                 metadata_only = TRUE)
 
 ## Retrieve a single dataset identified from the table
 res <- queryATAC(accession = "GSE89362")

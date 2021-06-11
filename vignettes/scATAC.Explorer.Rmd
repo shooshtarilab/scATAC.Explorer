@@ -93,19 +93,19 @@ This will return a list containing dataset GSE89362.
 The dataset is stored as a `SingleCellExperiment` object,
 which has the following metadata list
 
-| Attribute     | Description |
-| ------------- | --------------------------------------------------------------- |
-| cells         | A list of cells included in the study |
-| regions       | A list of genomic regions (peaks) included in the study |
-| pmid          | The PubMed ID of the study |
-| technology    | The sequencing technology used |
-| genome_build  | The genome build used for data generation |
-| score_type    | The type of scoring or normalization used on the counts data |
-| organism      | The type of organism from which cells were sequenced |
-| author        | The first author of the paper presenting the data |
-| disease       | The diseases sampled cells were sampled from |
+| Attribute     | Description                                                         |
+| ------------- | ------------------------------------------------------------------- |
+| cells         | A list of cells included in the study                               |
+| regions       | A list of genomic regions (peaks) included in the study             |
+| pmid          | The PubMed ID of the study                                          |
+| technology    | The sequencing technology used                                      |
+| genome_build  | The genome build used for data generation                           |
+| score_type    | The type of scoring or normalization used on the counts data        |
+| organism      | The type of organism from which cells were sequenced                |
+| author        | The first author of the paper presenting the data                   |
+| disease       | The diseases sampled cells were sampled from                        |
 | summary       | A broad summary of the study conditions the sample was assayed from |
-| accession | The GEO accession ID for the dataset |
+| accession     | The GEO accession ID for the dataset                                |
 
 : (\#tab:table2) Metadata attributes in the `SingleCellExperiment` object.
 
@@ -118,7 +118,7 @@ knitr::kable(data.frame(as.matrix(counts(res[[1]][1:10,1:8]))))
 ```
 
 Cell type labels and/or cluster assignments are stored under `colData(res[[1]])` for datasets 
-for which cell type labels and cluster assignments are available
+for which cell type labels and cluster assignments are available.
 
 Metadata is stored in a named list accessible by `metadata(res[[1]])`. 
 Specific entries can be accessed by attribute name.
