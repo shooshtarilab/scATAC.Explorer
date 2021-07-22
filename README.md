@@ -60,19 +60,22 @@ There are many parameters available to search for datasets. Below is an example 
 
 ![Screenshot of the metadata table](docs/leukemiaQueryMetadataTable.png)
 
-| Search Parameter         | Description                                 | Examples                |
-| ------------------------ | ------------------------------------------- | ----------------------- |
-| accession                | Search by unique accession number           | GSE129785, GSE89362     |
-| has_cell_type_annotation | Filter by presence of cell-type annotations | TRUE, FALSE             |
-| has_cluster_annotation   | Filter by presence of cluster results       | TRUE, FALSE             |
-| disease                  | Search by disease                           | Carcinoma, Leukemia     |
-| author                   | Search by first author                      | Satpathy, Cusanovich    |
-| journal                  | Search by publication journal               | Science, Nature, Cell   |
-| year                     | Search by year of publication               | <2015, >2015, 2013-2015 |
-| pmid                     | Search by PubMed ID                         | 27526324, 32494068      |
-| sequence_tech            | Search by sequencing technology             | 10x Genomics Chromium   |
-| organism                 | Search by source organism                   | Mus musculus            |
-| sparse                   | Return expression in sparse matrices        | TRUE, FALSE             |
+| Search Parameter    | Description                                         | Examples                    |
+| ------------------- | --------------------------------------------------- | --------------------------- |
+| accession           | Search by unique accession number or ID             | GSE129785, GSE89362         |
+| has_cell_types      | Filter by presence of cell-type annotations         | TRUE, FALSE                 |
+| has_clusters        | Filter by presence of cluster results               | TRUE, FALSE                 |
+| disease             | Search by disease                                   | Carcinoma, Leukemia         |
+| broad_cell_category | Search by broad cell cateogries present in datasets | Neuronal, Immune            |
+| tissue_cell_type    | Search by tissue or cell type when available        | PBMC, glia, cerebral cortex |
+| author              | Search by first author                              | Satpathy, Cusanovich        |
+| journal             | Search by publication journal                       | Science, Nature, Cell       |
+| year                | Search by year of publication                       | <2015, >2015, 2013-2015     |
+| pmid                | Search by PubMed ID                                 | 27526324, 32494068          |
+| sequence_tech       | Search by sequencing technology                     | 10x Genomics Chromium       |
+| organism            | Search by source organism                           | Mus musculus                |
+| genome_build        | Search by genome build                              | hg19, hg38, mm10            |
+| sparse              | Return expression in sparse matrices                | TRUE, FALSE                 |
 
 #### Searching by year
 
