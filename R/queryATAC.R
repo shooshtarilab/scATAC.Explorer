@@ -4,7 +4,7 @@
 #' A named list of SingleCellExperiment objects matching the provided options will be returned.
 #' In cases where a dataset is represented using multiple matrices, each matrix will be a seperate object within the list.
 #' The returned list is named by matrix allow easy identification of data.
-#' If queryATAC is called without any options it will retrieve all available datasets.
+#' If queryATAC is called without any options it will retrieve all available datasets in sparse matrix format.
 #' This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
 #' In most cases it is recommended to instead filter databases with some criteria.
 #' @param accession Search by geo accession number. Good for returning individual datasets
@@ -18,8 +18,8 @@
 #' @param has_cell_type_annotation Return only those datasets that have cell-type annotations available, or only those without annotations (TRUE/FALSE)
 #' @param organism Search by source organism used in the study, for example human or mouse.
 #' @param genome_build Return datasets built only using specified genome build (ex. hg19)
-#' @param category Return datasets based on broad cell categories (ex. Hematopoetic cells). To view cell categories available, query metadata.
-#' @param tissue Return datasets based on tissues sampled (ex. Blood)
+#' @param broad_cell_category Return datasets based on broad cell categories (ex. Hematopoetic cells). To view all cell categories available, explore the metadata table.
+#' @param tissue_cell_type Return datasets based on tissue or cell types sampled (ex. PBMCs, Bone marrow, Oligodendrocytes)
 #' @param disease Return datasets based on sampled disease (ex. carcinoma, leukemia, diabetes)
 #' @param metadata_only Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE
 #' @param sparse Return expression as a sparse matrix. Reccomended to use sparse format, as dense formats tend to be excessively large.
@@ -58,20 +58,20 @@ queryATAC <- function(accession=NULL,
                     has_cell_type_annotation=NULL,
                     organism=NULL,
                     genome_build=NULL,
-                    category=NULL,
-                    tissue=NULL,
+                    broad_cell_category=NULL,
+                    tissue_cell_type=NULL,
                     disease=NULL,
                     metadata_only=FALSE,
                     sparse = TRUE){
     df <- scatac_meta
     if (!is.null(accession)) {
-        df <- df[df$accession == accession,]
+        df <- df[df$Accession == accession,]
     }
     if (!is.null(author)) {
-        df <- df[toupper(df$author) == toupper(author),]
+        df <- df[toupper(df$Author) == toupper(author),]
     }
     if (!is.null(journal)) {
-        df <- df[toupper(df$journal) == toupper(journal),]
+        df <- df[toupper(df$Journal) == toupper(journal),]
     }
     if (!is.null(year)) {
         year <- gsub(' ', '', year)
@@ -79,32 +79,32 @@ queryATAC <- function(accession=NULL,
         if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>',year)[[1]][[1]]==1){
             year <- sub('>','',year)
             year <- sub('<','',year)
-            df <- df[df$year>=year,]
+            df <- df[df$Year>=year,]
 
         #check between
         }else if (grepl('-',year,fixed=TRUE)){
             year <- strsplit(year,'-')[[1]]
-            df <- df[df$year>=year[[1]]&df$year<=year[[2]],]
+            df <- df[df$Year>=year[[1]]&df$year<=year[[2]],]
 
         #check less than
         }else if (gregexpr('>', year)[[1]][[1]] == 5 || gregexpr('<',year)[[1]][[1]]==1){
             year <- sub('>','',year)
             year <- sub('<','',year)
-            df <- df[df$year<=year,]
+            df <- df[df$Year<=year,]
 
         #check equals
         }else{
-            df <- df[df$year==year,]
+            df <- df[df$Year==year,]
         }
     }
     if (!is.null(pmid)) {
         df <- df[df$PMID == pmid,]
     }
     if (!is.null(sequence_tech)) {
-        df <- df[toupper(df$sequencing_tech) == toupper(sequence_tech),]
+        df <- df[toupper(df$Sequencing_Technology) == toupper(sequence_tech),]
     }
     if (!is.null(score_type)) {
-        df <- df[toupper(df$score_type) == toupper(score_type) ,]
+        df <- df[toupper(df$Score_Type) == toupper(score_type) ,]
     }
     if (!is.null(has_cluster_annotation)) {
         if (has_cluster_annotation) {
@@ -115,9 +115,9 @@ queryATAC <- function(accession=NULL,
     }
     if (!is.null(has_cell_type_annotation)) {
         if (has_cell_type_annotation) {
-            df <- df[df$cell_type_labels_available == 'Y', ]
+            df <- df[df$Cell_Type_Labels_Available == 'Y', ]
         }else if (!has_cell_type_annotation) {
-            df <- df[df$cell_type_labels_available == 'N', ]
+            df <- df[df$Cell_Type_Labels_Available == 'N', ]
         }
     }
     if (!is.null(organism)) {
@@ -126,11 +126,11 @@ queryATAC <- function(accession=NULL,
     if (!is.null(genome_build)) {
         df <- df[toupper(df$Genome_Build) %like% toupper(genome_build),]
     }
-    if (!is.null(category)) {
-        df <- df[toupper(df$broad_cell_categories) %like% toupper(category),]
+    if (!is.null(broad_cell_category)) {
+        df <- df[toupper(df$Broad_Cell_Categories_Present) %like% toupper(broad_cell_category),]
     }
-    if (!is.null(tissue)) {
-        df <- df[toupper(df$tissue_type) %like% toupper(tissue),]
+    if (!is.null(tissue_cell_type)) {
+        df <- df[toupper(df$Tissue_Cell_Type) %like% toupper(tissue_cell_type),]
     }
     if (!is.null(disease)) {
         df <- df[toupper(df$Disease) %like% toupper(disease),]

@@ -16,8 +16,8 @@ queryATAC(
   has_cell_type_annotation = NULL,
   organism = NULL,
   genome_build = NULL,
-  category = NULL,
-  tissue = NULL,
+  broad_cell_category = NULL,
+  tissue_cell_type = NULL,
   disease = NULL,
   metadata_only = FALSE,
   sparse = TRUE
@@ -46,9 +46,9 @@ queryATAC(
 
 \item{genome_build}{Return datasets built only using specified genome build (ex. hg19)}
 
-\item{category}{Return datasets based on broad cell categories (ex. Hematopoetic cells). To view cell categories available, query metadata.}
+\item{broad_cell_category}{Return datasets based on broad cell categories (ex. Hematopoetic cells). To view all cell categories available, explore the metadata table}
 
-\item{tissue}{Return datasets based on tissues sampled (ex. Blood)}
+\item{tissue_cell_type}{Return datasets based on tissue or cell types sampled (ex. PBMCs, Bone marrow, Oligodendrocytes)}
 
 \item{disease}{Return datasets based on sampled disease (ex. carcinoma, leukemia, diabetes)}
 
@@ -65,7 +65,7 @@ This function allows you to search and subset included scATAC-seq datasets.
 A named list of scATAC-seq_data objects matching the provided options will be returned.
 Some included datasets are represented using multiple matrices. Each matrix will be a seperate named object within the list.
 The returned list is named by matrix allow easy identification of data.
-If queryATAC is called without any options it will retrieve all available datasets.
+If queryATAC is called without any options it will retrieve all available datasets in sparse matrix format.
 This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
 In most cases it is recommended to instead filter databases with some criteria.
 }
