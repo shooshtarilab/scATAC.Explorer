@@ -58,7 +58,7 @@ knitr::kable(head(res[,1:5]))
 ```
 
 | Search Parameter    | Description                                         | Examples                    |
-| ----------------    | -----------------------------------------------     | -----------------------     |
+| ------------------- | --------------------------------------------------- | --------------------------- |
 | accession           | Search by unique accession number or ID             | GSE129785, GSE89362         |
 | has_cell_types      | Filter by presence of cell-type annotations         | TRUE, FALSE                 |
 | has_clusters        | Filter by presence of cluster results               | TRUE, FALSE                 |
@@ -92,23 +92,23 @@ For this example, we're pulling a specific dataset by its GEO accession ID.
 res = queryATAC(accession = "GSE89362")
 ```
 
-This will return a list containing dataset GSE89362. 
+This will return a list containing dataset GSE89362.
 The dataset is stored as a `SingleCellExperiment` object,
-which has the following metadata attached to the object
+which has the following metadata attached to the object:
 
-| Attribute     | Description                                                         |
-| ------------- | ------------------------------------------------------------------- |
-| cells         | A list of cells included in the study                               |
-| regions       | A list of genomic regions (peaks) included in the study             |
-| pmid          | The PubMed ID of the study                                          |
-| technology    | The sequencing technology used                                      |
-| genome_build  | The genome build used for data generation                           |
-| score_type    | The type of scoring or normalization used on the counts data        |
-| organism      | The type of organism from which cells were sequenced                |
-| author        | The first author of the paper presenting the data                   |
-| disease       | The diseases sampled cells were sampled from                        |
-| summary       | A broad summary of the study conditions the sample was assayed from |
-| accession     | The GEO accession ID for the dataset                                |
+| Attribute    | Description                                                         |
+| ------------ | ------------------------------------------------------------------- |
+| cells        | A list of cells included in the study                               |
+| regions      | A list of genomic regions (peaks) included in the study             |
+| pmid         | The PubMed ID of the study                                          |
+| technology   | The sequencing technology used                                      |
+| genome_build | The genome build used for data generation                           |
+| score_type   | The type of scoring or normalization used on the counts data        |
+| organism     | The type of organism from which cells were sequenced                |
+| author       | The first author of the paper presenting the data                   |
+| disease      | The diseases sampled cells were sampled from                        |
+| summary      | A broad summary of the study conditions the sample was assayed from |
+| accession    | The GEO accession ID for the dataset                                |
 
 : (\#tab:table2) Metadata attributes in the `SingleCellExperiment` object.
 
@@ -132,8 +132,9 @@ metadata(res[[1]])$pmid
 
 ## Example: Returning all datasets with cell-type labels
 
-Say you want to compare chromatin accessibility between known cell types. 
-To do this, you need datasets that have cell-type annotations available. 
+Say you want to compare chromatin accessibility between known cell types.
+To do this, you need datasets that have cell-type annotations available.
+Be aware that returning a large amount of datasets like this will require a large amount of memory (greater than 16GB, if not more).
 ```{r, eval=FALSE}
 res = queryATAC(has_cell_type = TRUE)
 ```
