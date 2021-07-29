@@ -47,22 +47,22 @@
 #' ## Retrieve a single dataset identified from the table
 #' res <- queryATAC(accession = "GSE89362")
 
-queryATAC <- function(accession=NULL,
-                    author=NULL,
-                    journal=NULL,
-                    year=NULL,
-                    pmid=NULL,
-                    sequence_tech=NULL,
-                    score_type=NULL,
-                    has_cluster_annotation=NULL,
-                    has_cell_type_annotation=NULL,
-                    organism=NULL,
-                    genome_build=NULL,
-                    broad_cell_category=NULL,
-                    tissue_cell_type=NULL,
-                    disease=NULL,
-                    metadata_only=FALSE,
-                    sparse = TRUE){
+queryATAC <- function(accession = NULL,
+                    author = NULL,
+                    journal = NULL,
+                    year = NULL,
+                    pmid = NULL,
+                    sequence_tech = NULL,
+                    score_type = NULL,
+                    has_cluster_annotation = NULL,
+                    has_cell_type_annotation = NULL,
+                    organism = NULL,
+                    genome_build = NULL,
+                    broad_cell_category = NULL,
+                    tissue_cell_type = NULL,
+                    disease = NULL,
+                    metadata_only = FALSE,
+                    sparse = TRUE) {
     df <- scatac_meta
     if (!is.null(accession)) {
         df <- df[df$Accession == accession,]
@@ -76,25 +76,25 @@ queryATAC <- function(accession=NULL,
     if (!is.null(year)) {
         year <- gsub(' ', '', year)
         #check greater than
-        if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>',year)[[1]][[1]]==1){
-            year <- sub('>','',year)
-            year <- sub('<','',year)
-            df <- df[df$Year>=year,]
+        if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>', year)[[1]][[1]] == 1) {
+            year <- sub('>', '', year)
+            year <- sub('<', '', year)
+            df <- df[df$Year >= year,]
 
-        #check between
-        }else if (grepl('-',year,fixed=TRUE)){
-            year <- strsplit(year,'-')[[1]]
-            df <- df[df$Year>=year[[1]]&df$year<=year[[2]],]
+            #check between
+        } else if (grepl('-', year, fixed = TRUE)) {
+            year <- strsplit(year, '-')[[1]]
+            df <- df[df$Year >= year[[1]] & df$year <= year[[2]],]
 
-        #check less than
-        }else if (gregexpr('>', year)[[1]][[1]] == 5 || gregexpr('<',year)[[1]][[1]]==1){
-            year <- sub('>','',year)
-            year <- sub('<','',year)
-            df <- df[df$Year<=year,]
+            #check less than
+        } else if (gregexpr('>', year)[[1]][[1]] == 5 || gregexpr('<', year)[[1]][[1]] == 1) {
+            year <- sub('>', '', year)
+            year <- sub('<', '', year)
+            df <- df[df$Year <= year,]
 
-        #check equals
-        }else{
-            df <- df[df$Year==year,]
+            #check equals
+        } else {
+            df <- df[df$Year == year,]
         }
     }
     if (!is.null(pmid)) {
@@ -104,20 +104,20 @@ queryATAC <- function(accession=NULL,
         df <- df[toupper(df$Sequencing_Technology) == toupper(sequence_tech),]
     }
     if (!is.null(score_type)) {
-        df <- df[toupper(df$Score_Type) == toupper(score_type) ,]
+        df <- df[toupper(df$Score_Type) == toupper(score_type),]
     }
     if (!is.null(has_cluster_annotation)) {
         if (has_cluster_annotation) {
-            df <- df[df$Clustering_Results_Available == 'Y' ,]
-        }else if (!has_cluster_annotation) {
-            df <- df[df$Clustering_Results_Available == 'N' ,]
+            df <- df[df$Clustering_Results_Available == 'Y',]
+        } else if (!has_cluster_annotation) {
+            df <- df[df$Clustering_Results_Available == 'N',]
         }
     }
     if (!is.null(has_cell_type_annotation)) {
         if (has_cell_type_annotation) {
-            df <- df[df$Cell_Type_Labels_Available == 'Y', ]
-        }else if (!has_cell_type_annotation) {
-            df <- df[df$Cell_Type_Labels_Available == 'N', ]
+            df <- df[df$Cell_Type_Labels_Available == 'Y',]
+        } else if (!has_cell_type_annotation) {
+            df <- df[df$Cell_Type_Labels_Available == 'N',]
         }
     }
     if (!is.null(organism)) {
@@ -137,17 +137,17 @@ queryATAC <- function(accession=NULL,
     }
 
     if (metadata_only) {
-        df[,c('signature_link', 'expression_link', 'truth_label_link','sparse_expression_link')] <- list(NULL)
+        df[, c('signature_link', 'expression_link', 'truth_label_link', 'sparse_expression_link')] <- list(NULL)
         return(list(df))
     } else {
         df_list <- list()
         df_names <- character()
-        for (row in seq_len(nrow(df))){
+        for (row in seq_len(nrow(df))) {
             tryCatch({
                 df_list[[row]] <- fetchATAC(df, row, sparse)
                 df_names[[row]] <- metadata(df_list[[row]])$matrix_name
             },
-            error = function (e) {
+            error = function(e) {
                 print(conditionMessage(e))
             }
 

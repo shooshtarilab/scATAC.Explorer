@@ -27,11 +27,11 @@
 #'          output_directory_name = file.path(tdir, 'save_tme_data')}
 #' saveATAC(res, output_directory_name)
 #'
-saveATAC <- function(object, outdir){
-    if (!is(object,"SingleCellExperiment")){
+saveATAC <- function(object, outdir) {
+    if (!is(object, "SingleCellExperiment")) {
         stop('object parameter must be of type SingleCellExperiment')
     }
-    if (file.exists(outdir)){
+    if (file.exists(outdir)) {
         stop('outdir must not be an existing directory')
     } else {
         dir.create(outdir)
@@ -39,27 +39,27 @@ saveATAC <- function(object, outdir){
     expr_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
                             "matrix.mtx",
-                            sep='_'))
+                            sep = '_'))
     cellID_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
                             "barcodes.tsv",
-                            sep='_'))
+                            sep = '_'))
     peaks_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
                             "peaks.tsv",
-                            sep='_'))
+                            sep = '_'))
     label_name <- file.path(outdir,
                             paste(object@metadata$geo_accession,
                             "cell_types_and_clusters.csv",
-                            sep='_'))
+                            sep = '_'))
 
     # will always have matrix, cellID, and peaks
-    Matrix::writeMM(SingleCellExperiment::counts(object), file=expr_name)
-    write(colnames(object), file=cellID_name)
-    write(row.names(object), file=peaks_name)
+    Matrix::writeMM(SingleCellExperiment::counts(object), file = expr_name)
+    write(colnames(object), file = cellID_name)
+    write(row.names(object), file = peaks_name)
     # only write cluster/celltype data if we have it
     if (length(colnames(colData(object)) > 0)) {
-        write.csv(colData(object), file=label_name)
+        write.csv(colData(object), file = label_name)
     }
-    print(paste('Done! Check', outdir, 'for files', sep=' '))
+    print(paste('Done! Check', outdir, 'for files', sep = ' '))
 }
