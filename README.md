@@ -49,10 +49,10 @@ Note: in order to keep the function's interface consistent, `queryATAC` always r
 
 ![Screenshot of the metadata table](docs/metadataTable.png)
 
-The `metatadata_only` argument can be applied alongside any other argument in order to examine only datasets that have certain qualities. You can, for instance, view only leukemia datasets by using:
+The `metatadata_only` argument can be applied alongside any other argument in order to examine just the metadata of matching datasets. You can, for instance, view only leukemia datasets by using:
 
 ```R
-> res = queryATAC(disease = 'leukemia', metadata_only = TRUE)[[1]]
+> res = queryATAC(disease = "leukemia", metadata_only = TRUE)[[1]]
 > View(res)
 ```
 
@@ -89,7 +89,7 @@ Once you've found a field to search on, and have identified dataset(s) you are i
 > res = queryATAC(accession = "GSE89362")
 ```
 
-This will return a list containing dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object. The object contains the peak-by-cell matrix, as well as metadata for the dataset, including:
+This will return a named list containing all datasets that are found by the query. In this case the list contains only dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object. The object contains the peak-by-cell counts matrix, as well as metadata for the dataset, including:
 
 #### Metadata
 
@@ -111,17 +111,17 @@ This will return a list containing dataset GSE89362. The dataset is stored as a 
 
 Due to some datasets contain data gathered from several different organisims (such as both mice and human) or experimental conditions, some datasets are represtented by several entries with the same reference and accession, but containing different data. The *Data_Summary* and *matrix_names* field in the returned metadata table specify the contents of datasets with multiple entries. An example is given below:
 
-This single study collected data relating to carcinoma, and was found using *queryATAC(disease = carcinoma, metadata_only = TRUE)*. As shown below, there are 4 entries for data from one study.
+This study collected data relating to carcinoma and PBMC data was retrieved by using *queryATAC(accession = "GSE129785", metadata_only = TRUE)* to initially see just metadata associated with the study. As shown in the metadata_only results table below, there are 4 entries for data from one study, meaning there are 4 matrices of scATAC-seq data associated with this study.
 
 ![Screenshot of carcinoma metadata search results](docs/CarcinomaDatasets.png)
 
-By examining the *Data_Summary* field of the metadata results, we can see that each object that will be returned from a data query represents a different tissue sample.
+By examining the *Disease* and *Data_Summary* fields of the *metadata_only = TRUE* results, we can see that each object that will be returned represents a different tissue sample, some being healthy bone marrow samples, or others being basal cell carcinoma tumor biopsies. This data summary is also attached to each SingleCellExperiment object when entire datasets are downloaded.
 
 ![Screenshot of carcinoma metadata data summary fields](docs/CarcinomaDatasetsDataSummary.png)
 
 #### Accessing data
 
-To access the sequencing data (a peak-by-cell counts matrix), use the *counts()* function. Rows of the peak-by-cell matrix correspond to genomic regions (in the format of chromsome-start-end) that presented chromatin accessibility peaks, or pre-defined windows in the genome. Each column of the matrix represents a cell (named by the unique cell ID or cell barcode). Individual reads within the matrix specify whether accessibile chromatin was detected within the cell (0 if none detected). _Note: In the example image, a subset of the first 8 rows and columns of matrix were selected for demonstration purposes._
+To access the sequencing data (a peak-by-cell counts matrix), use the *counts()* function. Rows of the peak-by-cell matrix correspond to genomic regions (in the format of chromsome-start-end) that presented chromatin accessibility peaks, or pre-defined binned windows in the genome. Each column of the matrix represents a cell (named by the unique cell ID or cell barcode). Individual reads within the matrix specify whether accessibile chromatin was detected within the cell (0 if none detected, which is stored as a "." in sparse matrices). _Note: In the example image, a subset of the first 8 rows and columns of matrix were selected for demonstration purposes._
 
 ```R
 > counts(res[[1]])
@@ -130,6 +130,10 @@ To access the sequencing data (a peak-by-cell counts matrix), use the *counts()*
 ![Screenshot of counts matrix](docs/GSE89362countsMatrix.png)
 
 Cell type labels and/or cluster assignments are stored under `colData(res[[1]])` for datasets where cell type and/or cluster labels are available.
+
+As shown below, there can be multiple matrices returned by one query. Each item in the list is named to help differentiate them from one another, and can be selected by using res[[1]], res[[2]] and so on, or can be iterated over. Below is an example of a single dataset (GSE67446) that has two matrices associated with it, shown using *View(res)*.
+
+![Screenshot of counts matrix](docs/MultipleDatasetExample.png)
 
 To access metadata for the first dataset in a query result, use
 
@@ -142,6 +146,7 @@ Specific metadata entries can be accessed by specifying the attribute name, for 
 ```R
 > metadata(res[[1]])$pmid
 ```
+
 
 ### Example: Working with datasets containing cell type labels
 
