@@ -76,7 +76,8 @@ queryATAC <- function(accession = NULL,
     if (!is.null(year)) {
         year <- gsub(' ', '', year)
         #check greater than
-        if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>', year)[[1]][[1]] == 1) {
+        if (gregexpr('<', year)[[1]][[1]] == 5
+        || gregexpr('>', year)[[1]][[1]] == 1) {
             year <- sub('>', '', year)
             year <- sub('<', '', year)
             df <- df[df$Year >= year,]
@@ -87,7 +88,8 @@ queryATAC <- function(accession = NULL,
             df <- df[df$Year >= year[[1]] & df$year <= year[[2]],]
 
             #check less than
-        } else if (gregexpr('>', year)[[1]][[1]] == 5 || gregexpr('<', year)[[1]][[1]] == 1) {
+        } else if (gregexpr('>', year)[[1]][[1]] == 5 ||
+        gregexpr('<', year)[[1]][[1]] == 1) {
             year <- sub('>', '', year)
             year <- sub('<', '', year)
             df <- df[df$Year <= year,]
@@ -127,7 +129,8 @@ queryATAC <- function(accession = NULL,
         df <- df[toupper(df$Genome_Build) %like% toupper(genome_build),]
     }
     if (!is.null(broad_cell_category)) {
-        df <- df[toupper(df$Broad_Cell_Categories_Present) %like% toupper(broad_cell_category),]
+        df <- df[toupper(df$Broad_Cell_Categories_Present) %like%
+            toupper(broad_cell_category),]
     }
     if (!is.null(tissue_cell_type)) {
         df <- df[toupper(df$Tissue_Cell_Type) %like% toupper(tissue_cell_type),]
@@ -137,7 +140,8 @@ queryATAC <- function(accession = NULL,
     }
 
     if (metadata_only) {
-        df[, c('signature_link', 'expression_link', 'truth_label_link', 'sparse_expression_link')] <- list(NULL)
+        df[, c('signature_link', 'expression_link',
+        'truth_label_link', 'sparse_expression_link')] <- list(NULL)
         return(list(df))
     } else {
         df_list <- list()

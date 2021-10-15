@@ -33,7 +33,8 @@ fetchATAC <- function(df, row, sparse) {
             stop("error downloading counts matrix for dataset")
         }
         labels <- downloadATAC(df, row, 'cell_annotation_link', bfc)
-        if (!is.null(labels) && length(labels$cell) != length(colnames(expression))) {
+        if (!is.null(labels) &&
+        length(labels$cell) != length(colnames(expression))) {
             col.num <- which(colnames(expression) %in% labels$cell)
             expression <- expression[, col.num]
         }
@@ -50,7 +51,8 @@ fetchATAC <- function(df, row, sparse) {
                         score_type = df[row, 'Score_Type'],
                         organism = df[row, 'Organism'],
                         genome_build = df[row, 'Genome_Build'],
-                        cell_categories = df[row, 'Broad_Cell_Categories_Present'],
+                        cell_categories = df[row,
+                            'Broad_Cell_Categories_Present'],
                         tissue_type = df[row, 'Tissue_Cell_Type'],
                         disease = df[row, 'Disease'],
                         summary = df[row, 'Data_Summary'],
@@ -64,8 +66,9 @@ fetchATAC <- function(df, row, sparse) {
                                             metadata = dataset_data_meta)
     } else {
         dataset <- SingleCellExperiment(list(counts = expression),
-                                    colData = data.frame(label = labels[, c("cluster", "cell_label")]),
-                                    metadata = dataset_data_meta)
+        colData = data.frame(
+            label = labels[, c("cluster", "cell_label")]),
+            metadata = dataset_data_meta)
     }
 
     return(dataset)
