@@ -40,7 +40,7 @@ Start by exploring the available datasets through metadata.
 
 ```R
 library(scATAC.Explorer)
-> res = queryATAC(metadata_only = TRUE)
+res = queryATAC(metadata_only = TRUE)
 ```
 
 This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryATAC` for a description of searchable fields.
@@ -52,8 +52,8 @@ Note: in order to keep the function's interface consistent, `queryATAC` always r
 The `metatadata_only` argument can be applied alongside any other argument in order to examine just the metadata of matching datasets. You can, for instance, view only leukemia datasets by using:
 
 ```R
-> res = queryATAC(disease = "leukemia", metadata_only = TRUE)[[1]]
-> View(res)
+res = queryATAC(disease = "leukemia", metadata_only = TRUE)[[1]]
+View(res)
 ```
 
 There are many parameters available to search for datasets. Below is an example of some of the available parameters that can be searched by.
@@ -86,7 +86,7 @@ In order to search by single years and a range of years, the package looks for s
 Once you've found a field to search on, and have identified dataset(s) you are interested in, you can retrive their data. By querying without specifying the *metadata_only* parameter to TRUE, the data for the matching dataset(s) will be returned. In our first example we will retrieve a single dataset. This can be done by searching its unique accession ID.
 
 ```R
-> res = queryATAC(accession = "GSE89362")
+res = queryATAC(accession = "GSE89362")
 ```
 
 This will return a named list containing all datasets that are found by the query. In this case the list contains only dataset GSE89362. The dataset is stored as a `SingleCellExperiment` object. The object contains the peak-by-cell counts matrix, as well as metadata for the dataset, including:
@@ -124,7 +124,7 @@ By examining the *Disease* and *Data_Summary* fields of the *metadata_only = TRU
 To access the sequencing data (a peak-by-cell counts matrix), use the *counts()* function. Rows of the peak-by-cell matrix correspond to genomic regions (in the format of chromsome-start-end) that presented chromatin accessibility peaks, or pre-defined binned windows in the genome. Each column of the matrix represents a cell (named by the unique cell ID or cell barcode). Individual reads within the matrix specify whether accessibile chromatin was detected within the cell (0 if none detected, which is stored as a "." in sparse matrices). _Note: In the example image, a subset of the first 8 rows and columns of matrix were selected for demonstration purposes._
 
 ```R
-> counts(res[[1]])
+counts(res[[1]])
 ```
 
 ![Screenshot of counts matrix](docs/GSE89362countsMatrix.png)
@@ -138,13 +138,13 @@ As shown below, there can be multiple matrices returned by one query. Each item 
 To access metadata for the first dataset in a query result, use
 
 ```R
-> metadata(res[[1]])
+metadata(res[[1]])
 ```
 
 Specific metadata entries can be accessed by specifying the attribute name, for instance
 
 ```R
-> metadata(res[[1]])$pmid
+metadata(res[[1]])$pmid
 ```
 
 
@@ -153,8 +153,8 @@ Specific metadata entries can be accessed by specifying the attribute name, for 
 Say you want to compare chromatin accessibility between different cell types. To do this, you need datasets that have cell-types labels available. First you will need to query scATAC.Explorer to find any datasets containing your cell types of interest. This can be done by searching using the both the _has_cell_type_ and _metadata_only_ parameters.  
 
 ```R
-> res = queryATAC(has_cell_type_annotation = TRUE, metadata_only = TRUE)
-> View(res[[1]])
+res = queryATAC(has_cell_type_annotation = TRUE, metadata_only = TRUE)
+View(res[[1]])
 
 ```
 ![Screenshot of datasets with cell type labels](docs/datasetsWithCellType.png)
@@ -162,8 +162,8 @@ Say you want to compare chromatin accessibility between different cell types. To
 This will return a list of metadata for all datasets that have cell-type annotations available. We can see there is a dataset with 5 matrices, GSE144692, that contains cell type data. By examining the _Data_Summary_ and _matrix_names_ field of the metadata, we can see each matrix contains cells isolated from Type 1 Diabetes patients. :
 
 ```R
-> res = queryATAC(accession = "GSE144692", metadata_only = TRUE)
-> View(res[[1]])
+res = queryATAC(accession = "GSE144692", metadata_only = TRUE)
+View(res[[1]])
 ```
 
 ![Screenshot of datasets with cell type labels](docs/GSE144692DataSummary.png)
@@ -171,8 +171,8 @@ This will return a list of metadata for all datasets that have cell-type annotat
 For each SingleCellExperiment object returned, cell label or clustering annotations are also stored within the object. This can be accessed by using _colData()_  
 
 ```R
-> res = queryATAC(accession = "GSE144692")
-> colData(res[[1]])
+res = queryATAC(accession = "GSE144692")
+colData(res[[1]])
 ```
 
 ![Screenshot of the cell type labels](docs/cellTypeAnnotations.png)
@@ -189,10 +189,10 @@ Datasets retrieved using scATAC.Explorer can easily be converted to Seurat objec
 library(Seurat)
 library(Signac)
 # GSE89362 is used as an example, as it is the smallest dataset included within scATAC.Explorer
-> res = queryATAC(accession = "GSE89362")
-> GSE89362_assay <- CreateChromatinAssay(counts = counts(res[[1]]), sep = c("-", "-"))
-> GSE89362_obj <- CreateSeuratObject(counts = GSE89362_assay , assay = "peaks")
-> GSE89362_obj
+res = queryATAC(accession = "GSE89362")
+GSE89362_assay <- CreateChromatinAssay(counts = counts(res[[1]]), sep = c("-", "-"))
+GSE89362_obj <- CreateSeuratObject(counts = GSE89362_assay , assay = "peaks")
+GSE89362_obj
 ```
 
 ![Screenshot of datasets with cell type labels](docs/seuratObjectConversion.png)
@@ -202,42 +202,42 @@ Once converted to a Seurat object, functions from Signac can be used to preform 
 ```R
 library(ggplot2)
 # these three function below preform Latent Semantic Indexing (LSI), neccessary for Seurat UMAP projection and clustering
-> GSE89362_obj <- RunTFIDF(GSE89362_obj)
+GSE89362_obj <- RunTFIDF(GSE89362_obj)
 # setting cutoff to be top 100% so every feature gets a percentile rank assigned to it
-> GSE89362_obj <- FindTopFeatures(GSE89362_obj, min.cutoff = "q0")
-> GSE89362_obj <- RunSVD(GSE89362_obj)
+GSE89362_obj <- FindTopFeatures(GSE89362_obj, min.cutoff = "q0")
+GSE89362_obj <- RunSVD(GSE89362_obj)
 
 # generates a correlation plot between sequencing depth and LSI components. By observing the plot we can see the first LSI component is highly correlated with sequencing depth.
 # due to this, the first dimension of the LSI component will not be used in further analysis as a quality control step.
-> DepthCor(GSE89362_obj)
+DepthCor(GSE89362_obj)
 
 # run UMAP reduction, excluding the LSI first dimension as we are 
-> GSE89362_obj <- RunUMAP(GSE89362_obj, dims = 2:30, reduction = 'lsi')
+GSE89362_obj <- RunUMAP(GSE89362_obj, dims = 2:30, reduction = 'lsi')
 
 # plotting UMAP
-> UMAP.plt <- DimPlot(GSE89362_obj, reduction = "umap") + 
-  labs(title = "GSE89362 UMAP Visualization") +
-  theme(legend.position="none")
-> UMAP.plt
+UMAP.plt <- DimPlot(GSE89362_obj, reduction = "umap") + 
+    labs(title = "GSE89362 UMAP Visualization") +
+    theme(legend.position="none")
+UMAP.plt
 
 # clustering first by finding neighbours
-> GSE89362_obj <- FindNeighbors(
-  object = GSE89362_obj,
-  reduction = 'lsi',
-  dims = 2:30
+GSE89362_obj <- FindNeighbors(
+    object = GSE89362_obj,
+    reduction = 'lsi',
+    dims = 2:30
 )
 
 # finding and creating cluster annotations
 # algorithm 1 = Louvain clustering algorithm
-> GSE89362_obj <- FindClusters(
-  object = GSE89362_obj,
-  resolution = 1.1,
-  algorithm = 1,
-  verbose = FALSE
+GSE89362_obj <- FindClusters(
+    object = GSE89362_obj,
+    resolution = 1.1,
+    algorithm = 1,
+    verbose = FALSE
 )
 # generating UMAP plot with cluster assignments
-> cluster.plt <- DimPlot(object = GSE89362_obj, label = TRUE) + NoLegend()
-> cluster.plt
+cluster.plt <- DimPlot(object = GSE89362_obj, label = TRUE) + NoLegend()
+cluster.plt
 ```
 
 ![GSE89362 UMAP projection plot](docs/UMAPresults.png)
@@ -250,8 +250,8 @@ To facilitate the use of any or all datasets outside of R, you can use `saveATAC
 To save the data from the earlier example to disk, use the following commands.
 
 ```R
-> res = queryATAC(accession = "GSE89362")[[1]]
-> saveATAC(res, './Output')
+res = queryATAC(accession = "GSE89362")[[1]]
+saveATAC(res, './Output')
 [1] "Done! Check ./Output for file"
 ```
 
