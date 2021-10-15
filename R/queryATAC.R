@@ -148,7 +148,8 @@ queryATAC <- function(accession = NULL,
                 df_names[[row]] <- metadata(df_list[[row]])$matrix_name
             },
             error = function(e) {
-                print(conditionMessage(e))
+                message("error occured during query: ",
+                conditionMessage(e))
             }
 
             )
