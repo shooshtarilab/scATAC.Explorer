@@ -17,14 +17,14 @@ fetchATAC <- function(df, row, sparse) {
     tryCatch({
         if (sparse == FALSE) {
             if (df[row, 'dense_matrix_link'] == "") {
-                stop(paste(df[row, 'Accession'],
-                "has no dense matrix, use sparse=TRUE to download it."))
+                stop(df[row, 'Accession'],
+                "has no dense matrix, use sparse=TRUE to download it.")
             }
             expression <- downloadATAC(df, row, 'dense_matrix_link', bfc)
         } else if (sparse == TRUE) {
             if (df[row, 'sparse_matrix_link'] == "") {
-                stop(paste(df[row, 'Accession'],
-                "has no sparse matrix, use sparse=FALSE to download it."))
+                stop(df[row, 'Accession'],
+                "has no sparse matrix, use sparse=FALSE to download it.")
             }
             expression <- downloadATAC(df, row, 'sparse_matrix_link', bfc)
         }
