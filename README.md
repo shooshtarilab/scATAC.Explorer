@@ -245,9 +245,20 @@ cluster.plt
 
 ## Saving Data
 
-To facilitate the use of any or all datasets outside of R, you can use `saveATAC()`. `saveATAC` takes two parameters, one a `ATAC_data` object to be saved, and the other the directory you would like data to be saved in. Note that the output directory should not already exist.
+Many of the included scATAC-seq datasets are quite large downloads. To prevent having to repeatedly download a query every time you want to work with a particular set of datasets, you can save a query to disk using the R function `saveRDS()`, then read it back into R later using `readRDS()`. Below is an example of this functionality
 
-To save the data from the earlier example to disk, use the following commands.
+```R
+res = queryATAC(accession = "GSE89362")[[1]]
+saveRDS(res, './queryResult.rds') # saving as R object as file
+
+res = loadRDS('./queryResult.rds') # loading R object from file
+```
+
+## Exporting Data
+
+To facilitate the use of any or all datasets outside of R, you can use `saveATAC()`. `saveATAC` takes two parameters, one a `ATAC_data` object to be exported, and the other the directory you would like data to be saved in. Note that the output directory should not already exist.
+
+To export the data from the earlier example to disk, use the following commands.
 
 ```R
 res = queryATAC(accession = "GSE89362")[[1]]
