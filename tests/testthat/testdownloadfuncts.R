@@ -3,7 +3,7 @@ library(scATAC.Explorer)
 
 # should return a list with metadata dataframe inside
 test_that("Test metadata table retrieval", {
-    expect_type(queryATAC(metadata_only = T), "list")
+    expect_type(queryATAC(metadata_only = TRUE), "list")
     expect_s3_class(queryATAC(metadata_only = T)[[1]], "data.frame")
 })
 
