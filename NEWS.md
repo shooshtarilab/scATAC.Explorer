@@ -9,3 +9,8 @@
 * Formatted functions to shorten lines
 * Removed usage of T/F in test cases
 * Removed usage of 'paste' in condition signals
+
+# scATAC.Explorer 0.99.3
+
+* removed usage of paste() function in error handling functions
+
