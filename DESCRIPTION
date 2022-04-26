@@ -2,7 +2,7 @@ Package: scATAC.Explorer
 Title: 
     A Collection of Single-cell ATAC Sequencing Datasets and 
     Corresponding Metadata 
-Version: 1.1.2
+Version: 1.2.0
 Authors@R: 
     c(person(given="Arrian",
             family="Gibson-Khademi",
