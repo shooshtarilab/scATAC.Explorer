@@ -7,6 +7,8 @@ assignees: agibsonk
 
 ---
 
+Note: R scripts are available under the .github of the package repository for R scripts to process some of the common scATAC-seq data formats for submission to the package. 
+
 **Dataset description**
 
 Please provide a description of the dataset, such as what type of cells were sequenced, the number of cells, etc.
