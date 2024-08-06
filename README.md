@@ -36,7 +36,7 @@ R package dependencies for scATAC.Explorer include
 
 ## Exploring available datasets
 
-Start by exploring the available datasets through metadata.
+Start by exploring the available datasets through metadata. An online version of the metadata table can be viewed at https://shooshtarilab.github.io/scATAC.Explorer.
 
 ```R
 library(scATAC.Explorer)
