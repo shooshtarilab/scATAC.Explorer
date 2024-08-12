@@ -14,6 +14,7 @@
 #' @importFrom SingleCellExperiment colData
 #' @importFrom Matrix Matrix
 #' @importFrom utils write.csv
+#' @importFrom zellconverter writeH5AD
 #' @export
 #' @return Nothing
 #'
@@ -27,7 +28,7 @@
 #'          output_directory_name = file.path(tdir, 'save_tme_data')}
 #' saveATAC(res, output_directory_name)
 #'
-saveATAC <- function(object, outdir) {
+saveATAC <- function(object, outdir, format = "mtx") { 
     if (!is(object, "SingleCellExperiment")) {
         stop('object parameter must be of type SingleCellExperiment')
     }
@@ -36,30 +37,38 @@ saveATAC <- function(object, outdir) {
     } else {
         dir.create(outdir)
     }
-    expr_name <- file.path(outdir,
-                            paste(object@metadata$geo_accession,
-                            "matrix.mtx",
-                            sep = '_'))
-    cellID_name <- file.path(outdir,
-                            paste(object@metadata$geo_accession,
-                            "barcodes.tsv",
-                            sep = '_'))
-    peaks_name <- file.path(outdir,
-                            paste(object@metadata$geo_accession,
-                            "peaks.tsv",
-                            sep = '_'))
-    label_name <- file.path(outdir,
-                            paste(object@metadata$geo_accession,
-                            "cell_types_and_clusters.csv",
-                            sep = '_'))
+    if (format == "mtx") {
+        expr_name <- file.path(outdir,
+                                paste(object@metadata$accession,
+                                "matrix.mtx",
+                                sep = '_'))
+        cellID_name <- file.path(outdir,
+                                paste(object@metadata$accession,
+                                "barcodes.tsv",
+                                sep = '_'))
+        peaks_name <- file.path(outdir,
+                                paste(object@metadata$accession,
+                                "peaks.tsv",
+                                sep = '_'))
+        label_name <- file.path(outdir,
+                                paste(object@metadata$accession,
+                                "cell_types_and_clusters.csv",
+                                sep = '_'))
 
-    # will always have matrix, cellID, and peaks
-    Matrix::writeMM(SingleCellExperiment::counts(object), file = expr_name)
-    write(colnames(object), file = cellID_name)
-    write(row.names(object), file = peaks_name)
-    # only write cluster/celltype data if we have it
-    if (length(colnames(colData(object)) > 0)) {
-        write.csv(colData(object), file = label_name)
+        # will always have matrix, cellID, and peaks
+        Matrix::writeMM(SingleCellExperiment::counts(object), file = expr_name)
+        write(colnames(object), file = cellID_name)
+        write(row.names(object), file = peaks_name)
+        # only write cluster/celltype data if we have it
+        if (length(colnames(colData(object)) > 0)) {
+            write.csv(colData(object), file = label_name)
+        }
+    }
+    if (format == "h5ad") {
+
+        library(zellkonverter)
+        writeH5AD(object, "h5ad_file.h5ad")
+
     }
     print(paste('Done! Check', outdir, 'for files', sep = ' '))
 }
