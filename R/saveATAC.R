@@ -65,8 +65,6 @@ saveATAC <- function(object, outdir, format = "mtx") {
         }
     }
     if (format == "h5ad") {
-
-        library(zellkonverter)
         writeH5AD(object, "h5ad_file.h5ad")
 
     }
