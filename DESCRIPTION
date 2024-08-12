@@ -2,7 +2,7 @@ Package: scATAC.Explorer
 Title: 
     A Collection of Single-cell ATAC Sequencing Datasets and 
     Corresponding Metadata 
-Version: 1.3.1
+Version: 1.3.2
 Authors@R: 
     c(person(given="Arrian",
             family="Gibson-Khademi",
@@ -12,6 +12,10 @@ Authors@R:
             family = "Christensen",
             role = c("aut"),
             email = "echris3@uwo.ca"),
+    person(given = "Jonathan",
+	    family = "Wang",
+	    role = c("aut"),
+  	    email = "jwan2633@uwo.ca"),
     person(given="Parisa",
             family="Shooshtari",
             role = c("aut"),
@@ -41,7 +45,8 @@ Depends:
     BiocFileCache,
     data.table,
     utils,
-    S4Vectors
+    S4Vectors,
+    zellconverter
 biocViews: 
     SingleCellData,  
     SequencingData, 
