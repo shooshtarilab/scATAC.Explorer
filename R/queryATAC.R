@@ -38,14 +38,22 @@
 #' ## Retrieve the metadata table to see what data is available
 #' res <- queryATAC(metadata_only = TRUE)
 #'
-#' ## Retrieve a filtered metadata table that only shows datasets with
-#' ## cell type annotations and clustering annotations
-#' res <- queryATAC(has_cluster_annotation = TRUE, 
-#'                  has_cell_type_annotation = TRUE, 
-#'                  metadata_only = TRUE)
+#' ## Retrieve a single dataset based on its accession number
+#' res <- queryATAC(accession = "GSE129785")
+#' 
+#' ## Retrieve the metadata of datasets between 2016 and 2020
+#' res = queryATAC(year = "2016-2020", metadata_only = TRUE)
 #'
-#' ## Retrieve a single dataset identified from the table
-#' res <- queryATAC(accession = "GSE89362")
+#' ## From the table of datasets between 2016 and 2020,
+#' ## retrieve the dataset on the third row.
+#' res = queryATAC(year = "2016-2020")[[3]]
+#' 
+#' ## Retrieve a filtered metadata table that only shows mouse
+#' ## datasets derived from blood cells with cell type annotations
+#' res_mus <- queryATAC(has_cell_type_annotation = TRUE, 
+#'                  organism = "Mus musculus",
+#'                  tissue_cell_type = "blood",
+#'                  metadata_only = TRUE)
 
 queryATAC <- function(accession = NULL,
                     author = NULL,
