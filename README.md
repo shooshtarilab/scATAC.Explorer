@@ -47,7 +47,7 @@ This will return a list containing a single dataframe of metadata for all availa
 
 Note: in order to keep the function's interface consistent, `queryATAC` always returns a list of objects, even if there is only one object. You may prefer running `res = queryATAC(metadata_only = TRUE)[[1]]` in order to save the dataframe directly.
 
-![Screenshot of the metadata table](docs/metadataTable.png)
+![Screenshot of the metadata table](images/metadataTable.png)
 
 The `metatadata_only` argument can be applied alongside any other argument in order to examine just the metadata of matching datasets. You can, for instance, view only leukemia datasets by using:
 
@@ -58,7 +58,7 @@ View(res)
 
 There are many parameters available to search for datasets. Below is an example of some of the available parameters that can be searched by.
 
-![Screenshot of the metadata table](docs/leukemiaQueryMetadataTable.png)
+![Screenshot of the metadata table](images/leukemiaQueryMetadataTable.png)
 
 | Search Parameter    | Description                                         | Examples                    |
 | ------------------- | --------------------------------------------------- | --------------------------- |
@@ -113,11 +113,11 @@ Due to some datasets contain data gathered from several different organisims (su
 
 This study collected data relating to carcinoma and PBMC data was retrieved by using *queryATAC(accession = "GSE129785", metadata_only = TRUE)* to initially see just metadata associated with the study. As shown in the metadata_only results table below, there are 4 entries for data from one study, meaning there are 4 matrices of scATAC-seq data associated with this study.
 
-![Screenshot of carcinoma metadata search results](docs/CarcinomaDatasets.png)
+![Screenshot of carcinoma metadata search results](images/CarcinomaDatasets.png)
 
 By examining the *Disease* and *Data_Summary* fields of the *metadata_only = TRUE* results, we can see that each object that will be returned represents a different tissue sample, some being healthy bone marrow samples, or others being basal cell carcinoma tumor biopsies. This data summary is also attached to each SingleCellExperiment object when entire datasets are downloaded.
 
-![Screenshot of carcinoma metadata data summary fields](docs/CarcinomaDatasetsDataSummary.png)
+![Screenshot of carcinoma metadata data summary fields](images/CarcinomaDatasetsDataSummary.png)
 
 #### Accessing data
 
@@ -127,13 +127,13 @@ To access the sequencing data (a peak-by-cell counts matrix), use the *counts()*
 counts(res[[1]])
 ```
 
-![Screenshot of counts matrix](docs/GSE89362countsMatrix.png)
+![Screenshot of counts matrix](images/GSE89362countsMatrix.png)
 
 Cell type labels and/or cluster assignments are stored under `colData(res[[1]])` for datasets where cell type and/or cluster labels are available.
 
 As shown below, there can be multiple matrices returned by one query. Each item in the list is named to help differentiate them from one another, and can be selected by using res[[1]], res[[2]] and so on, or can be iterated over. Below is an example of a single dataset (GSE67446) that has two matrices associated with it, shown using *View(res)*.
 
-![Screenshot of counts matrix](docs/MultipleDatasetExample.png)
+![Screenshot of counts matrix](images/MultipleDatasetExample.png)
 
 To access metadata for the first dataset in a query result, use
 
@@ -157,7 +157,7 @@ res = queryATAC(has_cell_type_annotation = TRUE, metadata_only = TRUE)
 View(res[[1]])
 
 ```
-![Screenshot of datasets with cell type labels](docs/datasetsWithCellType.png)
+![Screenshot of datasets with cell type labels](images/datasetsWithCellType.png)
 
 This will return a list of metadata for all datasets that have cell-type annotations available. We can see there is a dataset with 5 matrices, GSE144692, that contains cell type data. By examining the _Data_Summary_ and _matrix_names_ field of the metadata, we can see each matrix contains cells isolated from Type 1 Diabetes patients. :
 
@@ -166,7 +166,7 @@ res = queryATAC(accession = "GSE144692", metadata_only = TRUE)
 View(res[[1]])
 ```
 
-![Screenshot of datasets with cell type labels](docs/GSE144692DataSummary.png)
+![Screenshot of datasets with cell type labels](images/GSE144692DataSummary.png)
 
 For each SingleCellExperiment object returned, cell label or clustering annotations are also stored within the object. This can be accessed by using _colData()_  
 
@@ -175,7 +175,7 @@ res = queryATAC(accession = "GSE144692")
 colData(res[[1]])
 ```
 
-![Screenshot of the cell type labels](docs/cellTypeAnnotations.png)
+![Screenshot of the cell type labels](images/cellTypeAnnotations.png)
 
 The rownames of this dataframe contains the cell barcode or cell ID, the second contains the cell type, and the third contains the cluster assignment if available. Any dataset with either cell type or clustering annotations will have this _colData_ available.
 
@@ -195,7 +195,7 @@ GSE89362_obj <- CreateSeuratObject(counts = GSE89362_assay , assay = "peaks")
 GSE89362_obj
 ```
 
-![Screenshot of datasets with cell type labels](docs/seuratObjectConversion.png)
+![Screenshot of datasets with cell type labels](images/seuratObjectConversion.png)
 
 Once converted to a Seurat object, functions from Signac can be used to preform further analysis. A quick example of this is shown by generating UMAP projections and clustering of cells retrieved from GSE89362.
 
@@ -240,8 +240,8 @@ cluster.plt <- DimPlot(object = GSE89362_obj, label = TRUE) + NoLegend()
 cluster.plt
 ```
 
-![GSE89362 UMAP projection plot](docs/UMAPresults.png)
-![GSE89362 UMAP clustering plot](docs/GSE89362clusterPlot.png)
+![GSE89362 UMAP projection plot](images/UMAPresults.png)
+![GSE89362 UMAP clustering plot](images/GSE89362clusterPlot.png)
 
 ## Saving Data
 
@@ -268,7 +268,7 @@ saveATAC(res, './Output')
 
 Three files will always be saved: a counts .mtx file, a peak region .tsv file, and a cell ID/Barcodes .tsv file. This format is following the Market Matrix format that can be used in other programs. If the SingleCellExperiment contained cell type or cell cluster annotations in it's _colData_, a csv file will be generated containing the annotations.
 
-![Screenshot of the saveATAC files](docs/saveATACfiles.png)
+![Screenshot of the saveATAC files](images/saveATACfiles.png)
 
 ## System Requirements
 
