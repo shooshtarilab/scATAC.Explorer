@@ -46,7 +46,7 @@ Depends:
     data.table,
     utils,
     S4Vectors,
-    zellconverter
+    zellkonverter
 biocViews: 
     SingleCellData,  
     SequencingData, 

@@ -14,7 +14,7 @@
 #' @importFrom SingleCellExperiment colData
 #' @importFrom Matrix Matrix
 #' @importFrom utils write.csv
-#' @importFrom zellconverter writeH5AD
+#' @importFrom zellkonverter writeH5AD
 #' @export
 #' @return Nothing
 #'
